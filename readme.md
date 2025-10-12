@@ -164,12 +164,7 @@ npm run dev
 
 ---
 
-## ✨ Deployment
-- **Frontend:** Vercel / Netlify  
-- **Backend:** Render / Railway / AWS EC2  
-- **Vector DB:** Chroma (local) or Pinecone (cloud)
 
----
 
 ## 📘 Author
 **Vivek Yadav** — Agentic AI & RAG Developer  
