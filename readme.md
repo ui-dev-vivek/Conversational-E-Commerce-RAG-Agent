@@ -1,31 +1,29 @@
+# 🧠 AI-Powered E-Commerce Chat Assistant
 
-# 🧠 AI-Powered E-Commerce Chat Assistant (RAG + Agents)
+**An intelligent conversational AI assistant for e-commerce that allows users to browse products, track orders, and make purchases through natural chat interactions.**
 
-An end-to-end **E-Commerce Conversational AI Assistant** built using **FastAPI** (backend) and **React** (frontend).  
-Users can browse products, track orders, and place new ones via chat.
+## 📖 Project Description
 
----
+This is an end-to-end **E-Commerce Conversational AI Assistant** that combines the power of **RAG (Retrieval-Augmented Generation)** and **AI Agents** to create a seamless shopping experience. Instead of traditional navigation, users can simply chat with the AI to find products, check order status, and complete purchases.
 
-## 🚀 Project Overview
+### 🎯 Key Features
+- **🛒 Smart Product Discovery**: "Show me red t-shirts under ₹500" or "Find laptops with 16GB RAM"
+- **📦 Order Management**: "Where is my latest order?" or "Show my order history"
+- **🧾 Conversational Checkout**: Add items to cart and complete purchases through chat
+- **👤 Personalized Experience**: User authentication and session management
+- **💬 Intelligent Dialog**: Context-aware conversations that understand both products and user context
 
-### User Capabilities
-- 🛒 Browse or search products via chat (“Show me red t-shirts under ₹500”)
-- 📦 Track existing orders (“Where is my latest order?”)
-- 🧾 Place new orders (chat → cart → checkout)
-- 👤 Login & maintain session
-- 💬 Chat with an intelligent agent that understands both product catalog & user profile.
 
----
 
 ## 🧩 Tech Stack
 
 | Component | Technology |
 |------------|-------------|
 | **Frontend** | React + Chat UI (`react-chat-elements`) |
-| **Backend** | FastAPI with LangChain / RAG pipeline |
+| **Backend** | FastAPI with LangChain / RAG pipeline | Agentic behavior with LangGraph |
 | **Database** | PostgreSQL / SQLite + ChromaDB |
 | **Embeddings** | `sentence-transformers/all-MiniLM-L6-v2` |
-| **LLM** | OpenAI / Ollama (local LLMs like Mistral, Llama3) |
+| **LLM** | OpenRouter (gpt-sso) |
 
 ---
 
@@ -60,30 +58,6 @@ Users can browse products, track orders, and place new ones via chat.
 
 ---
 
-## 💬 Free React Chat UI Libraries
-
-| Library | Link | Notes |
-|----------|------|-------|
-| **react-chat-elements** | https://github.com/Detaysoft/react-chat-elements | Easiest to use, customizable |
-| **react-chat-widget** | https://github.com/Wolox/react-chat-widget | Minimalist floating chat box |
-| **Vercel’s next-chat-ui** | https://github.com/vercel/ai-chatbot | Modern & production-grade |
-| **Chat UI Kit** | https://github.com/GetStream/stream-chat-react | Free tier available |
-
-**Recommendation:** Start with `react-chat-elements` → later upgrade to `next-chat-ui`.
-
----
-
-## 🧠 Free Embedding Models
-
-| Model | Type | Notes |
-|--------|------|--------|
-| `sentence-transformers/all-MiniLM-L6-v2` | Local | Fast, free, great for e-commerce |
-| `BAAI/bge-small-en-v1.5` | Local | Multilingual support |
-| `text-embedding-3-small` | API | High-quality (OpenAI) |
-
-**Start with:** `MiniLM-L6-v2` (no API cost).
-
----
 
 ## 📁 Folder Structure
 
@@ -144,13 +118,29 @@ ec-chat/
 
 ---
 
-## 🧩 Next Steps
 
-1. Generate FastAPI + React skeleton
-2. Connect `/chat` API endpoint with RAG logic
-3. Integrate `react-chat-elements`
-4. Add embeddings + ChromaDB
-5. Extend with LangChain Agent Tools
+## 💬 Free React Chat UI Libraries
+
+| Library | Link | Notes |
+|----------|------|-------|
+| **react-chat-elements** | https://github.com/Detaysoft/react-chat-elements | Easiest to use, customizable |
+| **react-chat-widget** | https://github.com/Wolox/react-chat-widget | Minimalist floating chat box |
+| **Vercel’s next-chat-ui** | https://github.com/vercel/ai-chatbot | Modern & production-grade |
+| **Chat UI Kit** | https://github.com/GetStream/stream-chat-react | Free tier available |
+
+**Recommendation:** Start with `react-chat-elements` → later upgrade to `next-chat-ui`.
+
+---
+
+## 🧠 Free Embedding Models
+
+| Model | Type | Notes |
+|--------|------|--------|
+| `sentence-transformers/all-MiniLM-L6-v2` | Local | Fast, free, great for e-commerce |
+| `BAAI/bge-small-en-v1.5` | Local | Multilingual support |
+| `text-embedding-3-small` | API | High-quality (OpenAI) |
+
+**Start with:** `MiniLM-L6-v2` (no API cost).
 
 ---
 
@@ -158,7 +148,7 @@ ec-chat/
 
 ### **Setup Backend**
 ```bash
-cd backend
+cd server
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -167,7 +157,7 @@ uvicorn app.main:app --reload
 
 ### **Setup Frontend**
 ```bash
-cd frontend
+cd client
 npm install
 npm run dev
 ```
