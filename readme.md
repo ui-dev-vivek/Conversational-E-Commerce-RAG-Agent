@@ -88,38 +88,58 @@ Users can browse products, track orders, and place new ones via chat.
 ## 📁 Folder Structure
 
 ```
-ecommerce-chat-assistant/
+ec-chat/
 │
-├── backend/
+├── server/                          # FastAPI Backend
 │   ├── app/
-│   │   ├── main.py
-│   │   ├── routes/
-│   │   │   ├── auth.py
-│   │   │   ├── chat.py
-│   │   │   ├── products.py
-│   │   │   └── orders.py
-│   │   ├── db/
-│   │   │   ├── models.py
-│   │   │   └── database.py
-│   │   ├── rag/
-│   │   │   ├── embedder.py
-│   │   │   ├── retriever.py
-│   │   │   └── agent_tools.py
-│   │   └── utils/
-│   │       └── auth.py
-│   └── requirements.txt
+│   │   ├── __init__.py
+│   │   ├── main.py                 # FastAPI app entry point
+│   │   ├── create_tables.py        # DB initialization script
+│   │   ├── config/                 # Configuration
+│   │   │   ├── __init__.py
+│   │   │   ├── settings.py         # Pydantic settings (env vars)
+│   │   │   └── database.py         # SQLAlchemy setup
+│   │   ├── models/                 # SQLAlchemy ORM models
+│   │   │   ├── __init__.py
+│   │   │   └── models.py           # User, Product, Order, etc.
+│   │   ├── schemas/                # Pydantic request/response schemas
+│   │   │   ├── __init__.py
+│   │   │   └── schemas.py
+│   │   ├── routes/                 # API endpoints
+│   │   │   ├── __init__.py
+│   │   │   ├── auth.py             # /api/auth
+│   │   │   ├── products.py         # /api/products
+│   │   │   ├── orders.py           # /api/orders
+│   │   │   └── chat.py             # /api/chat (RAG-powered)
+│   │   ├── services/               # Business logic layer
+│   │   │   └── __init__.py
+│   │   ├── utils/                  # Helper functions
+│   │   │   ├── __init__.py
+│   │   │   └── auth.py             # JWT, password hashing
+│   │   └── rag/                    # RAG & LLM components
+│   │       ├── __init__.py
+│   │       ├── embedder.py         # sentence-transformers
+│   │       ├── retriever.py        # ChromaDB vector search
+│   │       └── agent_tools.py      # LangChain tools
+│   ├── run.py                      # Development server runner
+│   ├── requirements.txt            # Python dependencies
+│   ├── .env                        # Environment variables (git-ignored)
+│   └── .env.example                # Example env file
 │
-└── frontend/
+└── client/                          # React Frontend
     ├── src/
-    │   ├── components/ChatUI/
+    │   ├── components/
+    │   │   └── ChatUI/
     │   ├── pages/
     │   │   ├── Login.jsx
     │   │   ├── Orders.jsx
     │   │   ├── Products.jsx
     │   │   └── Chat.jsx
     │   ├── App.jsx
-    │   └── api/
-    └── package.json
+    │   ├── main.jsx
+    │   └── api/                    # API client helpers
+    ├── package.json
+    └── vite.config.js
 ```
 
 ---
@@ -163,4 +183,4 @@ npm run dev
 
 ## 📘 Author
 **Vivek Yadav** — Agentic AI & RAG Developer  
-Guided by ChatGPT (GPT-5)
++917619876249
