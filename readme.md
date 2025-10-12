@@ -20,7 +20,7 @@ This is an end-to-end **E-Commerce Conversational AI Assistant** that combines t
 | Component | Technology |
 |------------|-------------|
 | **Frontend** | React + Chat UI (`react-chat-elements`) |
-| **Backend** | FastAPI with LangChain / RAG pipeline | Agentic behavior with LangGraph |
+| **Backend** | FastAPI with LangChain / RAG pipeline / Agentic behavior with LangGraph |
 | **Database** | PostgreSQL / SQLite + ChromaDB |
 | **Embeddings** | `sentence-transformers/all-MiniLM-L6-v2` |
 | **LLM** | OpenRouter (gpt-sso) |
