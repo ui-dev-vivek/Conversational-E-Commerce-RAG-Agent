@@ -13,3 +13,7 @@ class Settings(BaseSettings):
         env_file = ".env"
         case_sensitive = False
         extra = "allow"  # This allows extra fields
+
+
+# Create a singleton settings instance
+settings = Settings()
