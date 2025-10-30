@@ -1,4 +1,4 @@
-from Llm import Llm
+from server.app.services.llm import Llm
 
 
 chain
