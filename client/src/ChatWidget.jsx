@@ -14,25 +14,25 @@ export default function ChatWidget() {
   const messagesEndRef = useRef(null)
   const textareaRef = useRef(null)
 
-  // Auto-scroll to bottom when messages change
+  // ✅ Generate userId once per session
+  const [userId] = useState(() => {
+    const saved = localStorage.getItem('chat_user_id')
+    if (saved) return saved
+    const newId = `uid-${Math.floor(Math.random() * 1000000)}`
+    localStorage.setItem('chat_user_id', newId)
+    return newId
+  })
+
+  // Auto-scroll when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  // Apply chat-open class to root
+  // Manage chat open/close UI
   useEffect(() => {
     const root = document.getElementById('app-root')
     if (!root) return
-    
-    if (open) {
-      root.classList.add('chat-open')
-    } else {
-      root.classList.remove('chat-open')
-    }
-    
-    return () => {
-      root.classList.remove('chat-open')
-    }
+    root.classList.toggle('chat-open', open)
   }, [open])
 
   // Auto-resize textarea
@@ -52,22 +52,23 @@ export default function ChatWidget() {
     setIsTyping(true)
 
     try {
-      console.log('� Sending to API:', input.trim())
-      
+      console.log('📤 Sending:', input.trim())
+
       const response = await fetch(`${API_BASE}/api/chat/message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify({ message: input.trim() }),
+        body: JSON.stringify({
+          message: input.trim(),
+          user_id: userId, // ✅ Always send same user_id
+        }),
       })
 
       console.log('📡 Response status:', response.status)
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
 
       const data = await response.json()
       console.log('✅ API response:', data)
@@ -78,16 +79,12 @@ export default function ChatWidget() {
         time: Date.now() 
       }
       setMessages(prev => [...prev, aiMessage])
-
     } catch (error) {
-      console.error('❌ Error calling API:', error)
-      const errorMessage = { 
-        text: 'Sorry, I could not connect to the server. Please try again.', 
-        role: 'ai', 
-        time: Date.now(),
-        error: true
-      }
-      setMessages(prev => [...prev, errorMessage])
+      console.error('❌ Error:', error)
+      setMessages(prev => [
+        ...prev,
+        { text: 'Sorry, I could not connect to the server. Please try again.', role: 'ai', time: Date.now(), error: true }
+      ])
     } finally {
       setIsTyping(false)
     }
@@ -121,7 +118,7 @@ export default function ChatWidget() {
         </button>
       </div>
 
-      {/* Messages Container */}
+      {/* Messages */}
       <div className="chat-messages">
         {messages.map((msg, idx) => (
           <div key={idx} className={`message-wrapper ${msg.role}`}>
@@ -138,7 +135,7 @@ export default function ChatWidget() {
             </div>
           </div>
         ))}
-        
+
         {isTyping && (
           <div className="message-wrapper ai">
             <div className="message-avatar">🤖</div>
@@ -153,11 +150,10 @@ export default function ChatWidget() {
             </div>
           </div>
         )}
-        
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area */}
+      {/* Input */}
       <div className="chat-input-area">
         <textarea
           ref={textareaRef}

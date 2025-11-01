@@ -1,15 +1,17 @@
-#LLM to get Generative Responses.
 from langchain_openai import ChatOpenAI
+import os
+from ..config.settings import settings
 
 
 class Llm:
     def __init__(self):
-        self.key="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"
+        self.key = settings.openrouter_api_key or os.getenv("OPENROUTER_API_KEY")
+        if not self.key:
+            raise ValueError("OPENROUTER_API_KEY is not set. Please set it in the .env file or environment variables.")
+
         self.executor = ChatOpenAI(
             model="openai/gpt-oss-20b:free",
-            api_key=self.key,
-            base_url="https://openrouter.ai/api/v1",
+            openai_api_key=self.key,
+            openai_api_base="https://openrouter.ai/api/v1",
             temperature=0.7
         )
-        
-

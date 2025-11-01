@@ -8,6 +8,8 @@ class Settings(BaseSettings):
     db_port: Optional[int] = None
     db_name: Optional[str] = None
     debug: bool = False
+    openai_api_key: Optional[str] = None
+    openrouter_api_key: Optional[str] = None
     
     class Config:
         env_file = ".env"
