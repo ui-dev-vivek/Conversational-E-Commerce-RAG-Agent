@@ -37,8 +37,7 @@ async def chat_message(payload: ChatMessage):
             "Keep answers short (under 30 words) and accurate about products or shopping help."
             "User ask in Hinglish. You reply in Hindi."
         )
-    )
-    
+    )    
     # Add system and user messages
     history.add_message(system_message)
     history.add_message(HumanMessage(content=user_message))
