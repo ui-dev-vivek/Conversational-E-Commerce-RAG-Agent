@@ -24,6 +24,9 @@ class Settings(BaseSettings):
     anthropic_model: Optional[str] = None
     anthropic_api_base: Optional[str] = None
     
+    huggingface_api_key: Optional[str] = None
+    huggingface_embedding_model: Optional[str] = None
+    
     
     class Config:
         env_file = ".env"

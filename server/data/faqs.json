@@ -1,0 +1,202 @@
+{
+  "store_name": "AJ Creations",
+  "category": ["Women's Clothing", "Cosmetics", "Candles", "Soaps", "Decor Items"],
+  "faqs": [
+    {
+      "question": "What is AJ Creations?",
+      "answer": "AJ Creations is a lifestyle and boutique store based in Noida that offers women's clothing, cosmetics, candles, soaps, and decorative home products."
+    },
+    {
+      "question": "Where is AJ Creations located?",
+      "answer": "AJ Creations is located at Office No. 1125, Tower A, A40, Sector 62, Noida, Uttar Pradesh - 201309."
+    },
+    {
+      "question": "What are the store hours?",
+      "answer": "The store operates from Monday to Saturday, 10:00 AM to 8:00 PM."
+    },
+    {
+      "question": "How can I shop from AJ Creations?",
+      "answer": "You can shop in-store or online at www.ajcreations.in. Browse through categories, add products to your cart, and proceed to checkout securely."
+    },
+    {
+      "question": "Which payment methods are accepted?",
+      "answer": "AJ Creations accepts UPI, Credit/Debit Cards, Wallet Payments, Net Banking, and Cash on Delivery."
+    },
+    {
+      "question": "How can I track my order?",
+      "answer": "Once your order is shipped, a Tracking ID will be shared via SMS and email. You can track it at www.ajcreations.in/track-order."
+    },
+    {
+      "question": "How do I care for AJ Creations clothing?",
+      "answer": "Hand wash or use a gentle cycle with mild detergent. Avoid direct sunlight for drying."
+    },
+    {
+      "question": "How should I store candles and soaps?",
+      "answer": "Keep candles away from drafts and trim wicks before lighting. Store soaps in a dry place and avoid leaving them in water."
+    },
+    {
+      "question": "What is the AJ Rewards Program?",
+      "answer": "AJ Rewards is a loyalty program where you earn 1 point for every ₹100 spent. Points can be redeemed for discounts, gifts, and early access to sales."
+    },
+    {
+      "question": "How can I contact customer support?",
+      "answer": "You can reach AJ Creations via email at support@ajcreations.in, by phone at +91-9876543210, or through 24/7 live chat on the website."
+    },
+    {
+      "question": "Does AJ Creations offer Cash on Delivery?",
+      "answer": "Yes, Cash on Delivery (COD) is available on select orders."
+    },
+    {
+      "question": "Can I cancel my order?",
+      "answer": "Orders can be cancelled within 12 hours of placement, provided they haven’t been shipped yet."
+    },
+    {
+      "question": "How can I return a product?",
+      "answer": "Products can be returned within 7 days of delivery if unused and in original packaging. Some categories like cosmetics are non-returnable for hygiene reasons."
+    },
+    {
+      "question": "How do I join the AJ Rewards program?",
+      "answer": "You can sign up for free at www.ajcreations.in/rewards to start earning points and exclusive benefits."
+    },
+    {
+      "question": "Where can I send feedback or suggestions?",
+      "answer": "Send your feedback to feedback@ajcreations.in. The AJ Creations team values customer input for continuous improvement."
+    },
+    {
+      "question": "What types of products does AJ Creations sell?",
+      "answer": "AJ Creations sells women's fashion apparel, organic cosmetics, handcrafted candles, herbal soaps, and home décor items."
+    },
+    {
+      "question": "Does AJ Creations deliver across India?",
+      "answer": "Yes, AJ Creations offers nationwide delivery. Free shipping is available for orders above ₹999."
+    },
+    {
+      "question": "Is customer data safe while shopping online?",
+      "answer": "Yes, all transactions are encrypted and processed through secure, RBI-compliant gateways to protect customer data."
+    },
+    {
+      "question": "How long does delivery take?",
+      "answer": "Orders are usually shipped within 2–3 business days and delivered within 3–7 days depending on the location."
+    },
+    {
+      "question": "What is the best way to clean decor items?",
+      "answer": "Wipe gently with a dry or soft damp cloth. Avoid using harsh chemicals or abrasive materials."
+    },
+       {
+      "question": "What courier partners does AJ Creations use?",
+      "answer": "We work with leading courier services such as Bluedart, Delhivery, and India Post for reliable delivery."
+    },
+    {
+      "question": "How can I cancel my order?",
+      "answer": "You can cancel your order within 12 hours of placement before it has been shipped."
+    },
+    {
+      "question": "What is the return policy?",
+      "answer": "You can return products within 7 days of delivery if unused and in original packaging. Some products like cosmetics are non-returnable."
+    },
+    {
+      "question": "How do I initiate a return?",
+      "answer": "Go to your order history on the website, select the order, and click 'Request Return'."
+    },
+    {
+      "question": "How long does it take to get a refund?",
+      "answer": "Refunds are processed within 5–7 working days after we receive and verify the returned product."
+    },
+    {
+      "question": "Are there any non-returnable items?",
+      "answer": "Yes, cosmetics, personal hygiene items, and used products cannot be returned for safety reasons."
+    },
+    {
+      "question": "Does AJ Creations ship internationally?",
+      "answer": "Currently, we only deliver within India. International shipping will be available soon."
+    },
+    {
+      "question": "Is my personal data safe on the website?",
+      "answer": "Yes, we use secure SSL encryption and follow RBI-compliant payment processing standards."
+    },
+    {
+      "question": "Does AJ Creations store payment details?",
+      "answer": "No, we do not store your card or UPI information. All transactions are processed through secure payment gateways."
+    },
+    {
+      "question": "Can I modify my delivery address after placing an order?",
+      "answer": "Address changes are allowed within 6 hours of placing the order, provided the item hasn’t been shipped."
+    },
+    {
+      "question": "Does AJ Creations offer gift wrapping?",
+      "answer": "Yes, we offer eco-friendly gift wrapping for an additional ₹49 per item."
+    },
+    {
+      "question": "How can I care for AJ Creations clothing?",
+      "answer": "Use mild detergent, hand wash or gentle machine wash, and avoid direct sunlight for drying."
+    },
+    {
+      "question": "How should I store candles?",
+      "answer": "Keep candles away from fans and drafts, and always trim the wick before lighting."
+    },
+    {
+      "question": "How should I store soaps?",
+      "answer": "Store soaps in a dry place and avoid leaving them in water after use."
+    },
+    {
+      "question": "Are AJ Creations products handmade?",
+      "answer": "Many of our candles, soaps, and decor items are handcrafted by skilled local artisans."
+    },
+    {
+      "question": "Does AJ Creations offer eco-friendly products?",
+      "answer": "Yes, most of our products are made with sustainable materials and eco-friendly packaging."
+    },
+    {
+      "question": "How do I contact customer support?",
+      "answer": "You can contact us via email at support@ajcreations.in, phone at +91-9876543210, or live chat on our website."
+    },
+    {
+      "question": "What is the AJ Rewards Program?",
+      "answer": "It’s a loyalty program where customers earn points on every purchase and can redeem them for discounts and gifts."
+    },
+    {
+      "question": "How can I join the AJ Rewards Program?",
+      "answer": "Sign up for free at www.ajcreations.in/rewards to start earning points."
+    },
+    {
+      "question": "Can I use multiple coupons on one order?",
+      "answer": "No, only one promotional coupon or discount code can be applied per order."
+    },
+    {
+      "question": "Does AJ Creations have seasonal sales?",
+      "answer": "Yes, we offer special discounts during festive seasons, end-of-year sales, and exclusive online events."
+    },
+    {
+      "question": "How do I clean decor items?",
+      "answer": "Wipe them with a soft, dry or slightly damp cloth. Avoid using chemicals or water directly."
+    },
+    {
+      "question": "Can I get updates on new collections?",
+      "answer": "Yes, subscribe to our newsletter or follow us on Instagram and Facebook for new arrivals and offers."
+    },
+    {
+      "question": "Where can I share feedback or suggestions?",
+      "answer": "You can email us at feedback@ajcreations.in — we value customer input and continuously improve our offerings."
+    },
+    {
+      "question": "Does AJ Creations have a wholesale program?",
+      "answer": "Yes, we offer bulk order and wholesale options for selected product categories. Contact us via business@ajcreations.in."
+    },
+    {
+      "question": "Are AJ Creations products cruelty-free?",
+      "answer": "Yes, all our cosmetics and skincare products are cruelty-free and not tested on animals."
+    },
+    {
+      "question": "Do you offer personalized gifts or customization?",
+      "answer": "Yes, we offer product personalization for candles, hampers, and decor items on request."
+    }
+  ],
+  "support": {
+    "email": "support@ajcreations.in",
+    "phone": "+91-9876543210",
+    "website": "www.ajcreations.in",
+    "social_media": ["Instagram", "Facebook"],
+    "hours": "Mon–Sat, 10:00 AM – 8:00 PM"
+  },
+  "note": "This FAQ dataset is created for RAG-based AI chatbot integration and includes sample responses for customer assistance."
+}

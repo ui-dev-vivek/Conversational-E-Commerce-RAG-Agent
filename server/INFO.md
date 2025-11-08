@@ -14,6 +14,7 @@ server/
 │   │   ├── __init__.py
 │   │   ├── config.py                # Pydantic Settings for env vars, DB, LLM, RAG configs
 │   │   └── constants.py             # Global constants and app-wide settings
+        |    llmbase.py                # Base LLM class with factory pattern
 │   │
 │   ├── rag/                         # ⭐ RAG PIPELINE (Retrieval-Augmented Generation)
 │   │   ├── __init__.py

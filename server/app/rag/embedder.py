@@ -1,20 +1,12 @@
-"""Embedding generation for products and FAQs."""
+from langchain_huggingface import HuggingFaceEmbeddings
 from typing import List
-
-
+from app.config.settings import settings
 class Embedder:
-    """Generate embeddings using sentence-transformers."""
-
-    def __init__(self, model_name: str = "sentence-transformers/all-MiniLM-L6-v2"):
-        self.model_name = model_name
-        # TODO: Initialize sentence-transformers model
-
-    def embed_texts(self, texts: List[str]) -> List[List[float]]:
-        """Generate embeddings for a list of texts."""
-        # TODO: Implement embedding generation
-        return []
-
-    def embed_query(self, query: str) -> List[float]:
-        """Generate embedding for a single query."""
-        # TODO: Implement query embedding
-        return []
+    def __init__(self):
+        self.model_name=settings.huggingface_embedding_model
+        self.embeddings = HuggingFaceEmbeddings(
+            model_name=self.model_name,
+            model_kwargs={"device": "cpu"},
+            encode_kwargs={"normalize_embeddings": True},
+        )
+ 
