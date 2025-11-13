@@ -27,7 +27,7 @@ function Header() {
     <header className="fk-header">
       <div className="container">
         <div className="fk-top">
-          <div className="fk-logo">Flipkart</div>
+          <div className="fk-logo">AJ Creations</div>
           <div className="fk-search">
             <input placeholder="Search for products, brands and more" />
             <button>Search</button>

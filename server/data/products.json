@@ -1,0 +1,771 @@
+{
+  "store_name": "AJ Creations",
+  "categories": {
+    "womens_clothing": [
+      {
+        "id": "WC101",
+        "name": "Elegant Cotton Kurti",
+        "description": "Handcrafted cotton kurti with floral print and three-quarter sleeves.",
+        "price": 1499,
+        "material_or_ingredients": "100% Cotton",
+        "tags": [
+          "kurti",
+          "ethnic wear",
+          "handcrafted",
+          "cotton"
+        ],
+        "in_stock": true,
+        "rating": 4.6
+      },
+      {
+        "id": "WC102",
+        "name": "Chiffon Saree with Zari Border",
+        "description": "Lightweight chiffon saree in pastel shade with golden zari detailing.",
+        "price": 2499,
+        "material_or_ingredients": "Chiffon, Zari",
+        "tags": [
+          "saree",
+          "traditional",
+          "zari",
+          "ethnic"
+        ],
+        "in_stock": true,
+        "rating": 4.8
+      },
+      {
+        "id": "WC103",
+        "name": "Denim Maxi Dress",
+        "description": "Casual denim dress with front buttons and adjustable waist belt.",
+        "price": 1899,
+        "material_or_ingredients": "Denim",
+        "tags": [
+          "dress",
+          "casual wear",
+          "denim",
+          "western"
+        ],
+        "in_stock": true,
+        "rating": 4.5
+      },
+      {
+        "id": "WC104",
+        "name": "Silk Anarkali Gown",
+        "description": "Full-length anarkali gown made from Banarasi silk with embroidered yoke.",
+        "price": 4999,
+        "material_or_ingredients": "Banarasi Silk",
+        "tags": [
+          "gown",
+          "festive",
+          "silk",
+          "ethnic"
+        ],
+        "in_stock": true,
+        "rating": 4.9
+      },
+      {
+        "id": "WC105",
+        "name": "Printed Palazzo Set",
+        "description": "Soft rayon palazzo set with matching dupatta, perfect for daily wear.",
+        "price": 1599,
+        "material_or_ingredients": "Rayon",
+        "tags": [
+          "palazzo",
+          "set",
+          "rayon",
+          "ethnic wear"
+        ],
+        "in_stock": true,
+        "rating": 4.4
+      },
+      {
+        "id": "WC106",
+        "name": "Boho Wrap Skirt",
+        "description": "Multicolor bohemian wrap skirt with mirror work and tassel detailing.",
+        "price": 1299,
+        "material_or_ingredients": "Cotton Blend",
+        "tags": [
+          "boho",
+          "skirt",
+          "fusion wear",
+          "cotton"
+        ],
+        "in_stock": true,
+        "rating": 4.7
+      },
+      {
+        "id": "WC107",
+        "name": "Linen Shirt Dress",
+        "description": "Comfortable linen shirt dress with side pockets and rolled-up sleeves.",
+        "price": 2199,
+        "material_or_ingredients": "Pure Linen",
+        "tags": [
+          "dress",
+          "linen",
+          "casual",
+          "comfortable"
+        ],
+        "in_stock": true,
+        "rating": 4.5
+      },
+      {
+        "id": "WC108",
+        "name": "Velvet Party Blouse",
+        "description": "Royal velvet blouse with sequin detailing and deep back design.",
+        "price": 999,
+        "material_or_ingredients": "Velvet",
+        "tags": [
+          "blouse",
+          "party wear",
+          "velvet",
+          "festive"
+        ],
+        "in_stock": true,
+        "rating": 4.3
+      },
+      {
+        "id": "WC109",
+        "name": "Hand-Embroidered Dupatta",
+        "description": "Pure georgette dupatta with hand embroidery and zari border.",
+        "price": 1299,
+        "material_or_ingredients": "Georgette, Zari",
+        "tags": [
+          "dupatta",
+          "handmade",
+          "georgette",
+          "embroidery"
+        ],
+        "in_stock": true,
+        "rating": 4.6
+      },
+      {
+        "id": "WC110",
+        "name": "Classic Black Leggings",
+        "description": "Stretchable and comfortable leggings suitable for daily wear.",
+        "price": 599,
+        "material_or_ingredients": "Cotton Lycra",
+        "tags": [
+          "leggings",
+          "daily wear",
+          "stretch",
+          "cotton"
+        ],
+        "in_stock": true,
+        "rating": 4.2
+      }
+    ],
+    "cosmetics": [
+      {
+        "id": "CM201",
+        "name": "Organic Lip Balm",
+        "description": "Moisturizing lip balm made with beeswax and shea butter.",
+        "price": 299,
+        "material_or_ingredients": "Beeswax, Shea Butter, Vitamin E",
+        "tags": [
+          "lip balm",
+          "organic",
+          "natural",
+          "hydrating"
+        ],
+        "in_stock": true,
+        "rating": 4.7
+      },
+      {
+        "id": "CM202",
+        "name": "Herbal Face Cream",
+        "description": "Daily use cream enriched with aloe vera and turmeric extracts.",
+        "price": 499,
+        "material_or_ingredients": "Aloe Vera, Turmeric, Almond Oil",
+        "tags": [
+          "face cream",
+          "herbal",
+          "moisturizer",
+          "natural"
+        ],
+        "in_stock": true,
+        "rating": 4.5
+      },
+      {
+        "id": "CM203",
+        "name": "Rose Water Toner",
+        "description": "Pure rose water toner to refresh and hydrate the skin.",
+        "price": 349,
+        "material_or_ingredients": "Steam Distilled Rose Extracts",
+        "tags": [
+          "toner",
+          "rose water",
+          "refreshing",
+          "hydrating"
+        ],
+        "in_stock": true,
+        "rating": 4.6
+      },
+      {
+        "id": "CM204",
+        "name": "Natural Kajal Stick",
+        "description": "Long-lasting kajal made with castor oil and almond extract.",
+        "price": 199,
+        "material_or_ingredients": "Castor Oil, Almond Oil, Soot",
+        "tags": [
+          "kajal",
+          "eye makeup",
+          "natural",
+          "safe"
+        ],
+        "in_stock": true,
+        "rating": 4.3
+      },
+      {
+        "id": "CM205",
+        "name": "Aloe Vera Gel",
+        "description": "Soothing aloe vera gel for skin hydration and after-sun care.",
+        "price": 399,
+        "material_or_ingredients": "Aloe Vera, Vitamin E",
+        "tags": [
+          "gel",
+          "aloe vera",
+          "hydration",
+          "skincare"
+        ],
+        "in_stock": true,
+        "rating": 4.8
+      },
+      {
+        "id": "CM206",
+        "name": "Charcoal Face Pack",
+        "description": "Detoxifying charcoal mask that removes impurities and excess oil.",
+        "price": 599,
+        "material_or_ingredients": "Activated Charcoal, Bentonite Clay",
+        "tags": [
+          "mask",
+          "charcoal",
+          "detox",
+          "oil control"
+        ],
+        "in_stock": true,
+        "rating": 4.4
+      },
+      {
+        "id": "CM207",
+        "name": "Herbal Shampoo",
+        "description": "Mild herbal shampoo that nourishes hair with amla and hibiscus.",
+        "price": 449,
+        "material_or_ingredients": "Amla, Hibiscus, Neem",
+        "tags": [
+          "shampoo",
+          "herbal",
+          "hair care",
+          "natural"
+        ],
+        "in_stock": true,
+        "rating": 4.5
+      },
+      {
+        "id": "CM208",
+        "name": "Coconut Hair Oil",
+        "description": "Cold-pressed coconut oil for healthy and shiny hair.",
+        "price": 299,
+        "material_or_ingredients": "100% Coconut Oil",
+        "tags": [
+          "hair oil",
+          "coconut",
+          "natural",
+          "nourishing"
+        ],
+        "in_stock": true,
+        "rating": 4.9
+      },
+      {
+        "id": "CM209",
+        "name": "Vitamin C Serum",
+        "description": "Brightening face serum infused with pure Vitamin C and hyaluronic acid.",
+        "price": 799,
+        "material_or_ingredients": "Vitamin C, Hyaluronic Acid, Green Tea",
+        "tags": [
+          "serum",
+          "vitamin c",
+          "brightening",
+          "anti-aging"
+        ],
+        "in_stock": true,
+        "rating": 4.7
+      },
+      {
+        "id": "CM210",
+        "name": "Lip & Cheek Tint",
+        "description": "Dual-use tint made with beetroot and rose pigments for a natural glow.",
+        "price": 599,
+        "material_or_ingredients": "Beetroot Extract, Rose Oil",
+        "tags": [
+          "tint",
+          "lip",
+          "cheek",
+          "natural makeup"
+        ],
+        "in_stock": true,
+        "rating": 4.6
+      }
+    ],
+    "candles": [
+      {
+        "id": "CD301",
+        "name": "Lavender Bliss Candle",
+        "description": "Scented soy wax candle with calming lavender fragrance.",
+        "price": 499,
+        "material_or_ingredients": "Soy Wax, Lavender Essential Oil",
+        "tags": [
+          "candle",
+          "lavender",
+          "scented",
+          "relaxation"
+        ],
+        "in_stock": true,
+        "rating": 4.8
+      },
+      {
+        "id": "CD302",
+        "name": "Vanilla Dream Candle",
+        "description": "Sweet vanilla-scented candle in a frosted glass jar.",
+        "price": 549,
+        "material_or_ingredients": "Soy Wax, Vanilla Essence",
+        "tags": [
+          "vanilla",
+          "candle",
+          "soothing",
+          "aroma"
+        ],
+        "in_stock": true,
+        "rating": 4.6
+      },
+      {
+        "id": "CD303",
+        "name": "Rose Garden Candle",
+        "description": "Elegant rose-scented candle ideal for romantic ambiance.",
+        "price": 599,
+        "material_or_ingredients": "Soy Wax, Rose Oil",
+        "tags": [
+          "rose",
+          "candle",
+          "floral",
+          "romantic"
+        ],
+        "in_stock": true,
+        "rating": 4.7
+      },
+      {
+        "id": "CD304",
+        "name": "Ocean Mist Candle",
+        "description": "Fresh oceanic fragrance candle to create a breezy atmosphere.",
+        "price": 499,
+        "material_or_ingredients": "Soy Wax, Marine Extracts",
+        "tags": [
+          "candle",
+          "ocean",
+          "fresh",
+          "relaxing"
+        ],
+        "in_stock": true,
+        "rating": 4.5
+      },
+      {
+        "id": "CD305",
+        "name": "Coffee Bean Candle",
+        "description": "Strong coffee-scented candle for energetic mornings.",
+        "price": 549,
+        "material_or_ingredients": "Soy Wax, Coffee Extract",
+        "tags": [
+          "coffee",
+          "candle",
+          "energizing",
+          "aroma"
+        ],
+        "in_stock": true,
+        "rating": 4.8
+      },
+      {
+        "id": "CD306",
+        "name": "Citrus Burst Candle",
+        "description": "Refreshing blend of orange and lemon essential oils.",
+        "price": 449,
+        "material_or_ingredients": "Soy Wax, Citrus Oils",
+        "tags": [
+          "citrus",
+          "fresh",
+          "energizing",
+          "candle"
+        ],
+        "in_stock": true,
+        "rating": 4.6
+      },
+      {
+        "id": "CD307",
+        "name": "Jasmine Delight Candle",
+        "description": "Sweet jasmine fragrance that creates a calm, floral ambiance.",
+        "price": 499,
+        "material_or_ingredients": "Soy Wax, Jasmine Oil",
+        "tags": [
+          "jasmine",
+          "candle",
+          "floral",
+          "home decor"
+        ],
+        "in_stock": true,
+        "rating": 4.7
+      },
+      {
+        "id": "CD308",
+        "name": "Sandalwood Essence Candle",
+        "description": "Luxury sandalwood candle with a rich, woody aroma.",
+        "price": 699,
+        "material_or_ingredients": "Soy Wax, Sandalwood Oil",
+        "tags": [
+          "sandalwood",
+          "candle",
+          "aromatic",
+          "relaxation"
+        ],
+        "in_stock": true,
+        "rating": 4.9
+      },
+      {
+        "id": "CD309",
+        "name": "Coconut Paradise Candle",
+        "description": "Tropical coconut scent with notes of vanilla and palm.",
+        "price": 549,
+        "material_or_ingredients": "Soy Wax, Coconut Essence",
+        "tags": [
+          "coconut",
+          "candle",
+          "tropical",
+          "relaxation"
+        ],
+        "in_stock": true,
+        "rating": 4.8
+      },
+      {
+        "id": "CD310",
+        "name": "Amber Glow Candle",
+        "description": "Warm amber candle ideal for cozy evenings and meditation.",
+        "price": 599,
+        "material_or_ingredients": "Soy Wax, Amber Resin",
+        "tags": [
+          "amber",
+          "warm",
+          "meditation",
+          "candle"
+        ],
+        "in_stock": true,
+        "rating": 4.7
+      }
+    ],
+    "soaps": [
+      {
+        "id": "SP401",
+        "name": "Neem Tulsi Soap",
+        "description": "Antibacterial herbal soap with neem and tulsi extracts.",
+        "price": 199,
+        "material_or_ingredients": "Neem, Tulsi, Coconut Oil",
+        "tags": [
+          "soap",
+          "herbal",
+          "antibacterial",
+          "natural"
+        ],
+        "in_stock": true,
+        "rating": 4.6
+      },
+      {
+        "id": "SP402",
+        "name": "Aloe Vera Soap",
+        "description": "Gentle moisturizing soap suitable for all skin types.",
+        "price": 179,
+        "material_or_ingredients": "Aloe Vera, Glycerin",
+        "tags": [
+          "soap",
+          "moisturizing",
+          "aloe",
+          "natural"
+        ],
+        "in_stock": true,
+        "rating": 4.7
+      },
+      {
+        "id": "SP403",
+        "name": "Charcoal Detox Soap",
+        "description": "Activated charcoal soap for deep cleansing and oil control.",
+        "price": 249,
+        "material_or_ingredients": "Charcoal, Tea Tree Oil",
+        "tags": [
+          "soap",
+          "charcoal",
+          "detox",
+          "oil control"
+        ],
+        "in_stock": true,
+        "rating": 4.5
+      },
+      {
+        "id": "SP404",
+        "name": "Rose Petal Soap",
+        "description": "Floral soap enriched with rose oil and petals for glowing skin.",
+        "price": 199,
+        "material_or_ingredients": "Rose Oil, Glycerin",
+        "tags": [
+          "soap",
+          "rose",
+          "floral",
+          "gentle"
+        ],
+        "in_stock": true,
+        "rating": 4.6
+      },
+      {
+        "id": "SP405",
+        "name": "Lemon Zest Soap",
+        "description": "Citrus soap that rejuvenates and brightens dull skin.",
+        "price": 189,
+        "material_or_ingredients": "Lemon Oil, Shea Butter",
+        "tags": [
+          "soap",
+          "citrus",
+          "brightening",
+          "refreshing"
+        ],
+        "in_stock": true,
+        "rating": 4.4
+      },
+      {
+        "id": "SP406",
+        "name": "Honey & Oats Soap",
+        "description": "Exfoliating soap bar made with organic honey and oats.",
+        "price": 229,
+        "material_or_ingredients": "Honey, Oats, Coconut Oil",
+        "tags": [
+          "soap",
+          "exfoliating",
+          "honey",
+          "natural"
+        ],
+        "in_stock": true,
+        "rating": 4.8
+      },
+      {
+        "id": "SP407",
+        "name": "Sandalwood Soap",
+        "description": "Luxurious bathing bar with sandalwood and turmeric extracts.",
+        "price": 249,
+        "material_or_ingredients": "Sandalwood, Turmeric, Coconut Oil",
+        "tags": [
+          "soap",
+          "sandalwood",
+          "herbal",
+          "aromatic"
+        ],
+        "in_stock": true,
+        "rating": 4.9
+      },
+      {
+        "id": "SP408",
+        "name": "Coconut Milk Soap",
+        "description": "Creamy soap made with coconut milk for smooth, soft skin.",
+        "price": 219,
+        "material_or_ingredients": "Coconut Milk, Shea Butter",
+        "tags": [
+          "soap",
+          "coconut",
+          "moisturizing",
+          "gentle"
+        ],
+        "in_stock": true,
+        "rating": 4.7
+      },
+      {
+        "id": "SP409",
+        "name": "Coffee Scrub Soap",
+        "description": "Invigorating soap bar with coffee granules for exfoliation.",
+        "price": 239,
+        "material_or_ingredients": "Coffee, Cocoa Butter",
+        "tags": [
+          "soap",
+          "coffee",
+          "scrub",
+          "exfoliating"
+        ],
+        "in_stock": true,
+        "rating": 4.6
+      },
+      {
+        "id": "SP410",
+        "name": "Mint Cool Soap",
+        "description": "Refreshing mint soap perfect for summer freshness.",
+        "price": 199,
+        "material_or_ingredients": "Peppermint Oil, Aloe Vera",
+        "tags": [
+          "soap",
+          "mint",
+          "cooling",
+          "refreshing"
+        ],
+        "in_stock": true,
+        "rating": 4.5
+      }
+    ],
+    "decor_items": [
+      {
+        "id": "DI501",
+        "name": "Handmade Clay Lamp",
+        "description": "Traditional terracotta lamp ideal for festive décor.",
+        "price": 599,
+        "material_or_ingredients": "Terracotta Clay",
+        "tags": [
+          "lamp",
+          "handmade",
+          "clay",
+          "festive"
+        ],
+        "in_stock": true,
+        "rating": 4.7
+      },
+      {
+        "id": "DI502",
+        "name": "Macrame Wall Hanging",
+        "description": "Boho-style macrame décor piece handcrafted with cotton thread.",
+        "price": 999,
+        "material_or_ingredients": "Cotton Thread",
+        "tags": [
+          "macrame",
+          "boho",
+          "decor",
+          "wall hanging"
+        ],
+        "in_stock": true,
+        "rating": 4.8
+      },
+      {
+        "id": "DI503",
+        "name": "Framed Floral Painting",
+        "description": "Acrylic painting of flowers framed in wooden border.",
+        "price": 1499,
+        "material_or_ingredients": "Canvas, Wood Frame",
+        "tags": [
+          "painting",
+          "decor",
+          "floral",
+          "wall art"
+        ],
+        "in_stock": true,
+        "rating": 4.6
+      },
+      {
+        "id": "DI504",
+        "name": "Aromatic Potpourri Bowl",
+        "description": "Decorative bowl filled with dried aromatic petals and spices.",
+        "price": 699,
+        "material_or_ingredients": "Dry Flowers, Essential Oils",
+        "tags": [
+          "potpourri",
+          "decor",
+          "fragrance",
+          "home"
+        ],
+        "in_stock": true,
+        "rating": 4.5
+      },
+      {
+        "id": "DI505",
+        "name": "Bamboo Plant Holder",
+        "description": "Eco-friendly bamboo pot holder for indoor plants.",
+        "price": 899,
+        "material_or_ingredients": "Bamboo",
+        "tags": [
+          "plant holder",
+          "eco-friendly",
+          "bamboo",
+          "decor"
+        ],
+        "in_stock": true,
+        "rating": 4.7
+      },
+      {
+        "id": "DI506",
+        "name": "Decorative Glass Vase",
+        "description": "Transparent glass vase perfect for fresh flowers or candles.",
+        "price": 799,
+        "material_or_ingredients": "Glass",
+        "tags": [
+          "vase",
+          "decor",
+          "glass",
+          "floral"
+        ],
+        "in_stock": true,
+        "rating": 4.5
+      },
+      {
+        "id": "DI507",
+        "name": "Wooden Name Plate",
+        "description": "Customized name plate made of polished teak wood.",
+        "price": 1299,
+        "material_or_ingredients": "Teak Wood",
+        "tags": [
+          "decor",
+          "wood",
+          "customized",
+          "home"
+        ],
+        "in_stock": true,
+        "rating": 4.8
+      },
+      {
+        "id": "DI508",
+        "name": "Ceramic Aroma Diffuser",
+        "description": "Stylish aroma diffuser compatible with essential oils.",
+        "price": 899,
+        "material_or_ingredients": "Ceramic",
+        "tags": [
+          "diffuser",
+          "aroma",
+          "ceramic",
+          "home fragrance"
+        ],
+        "in_stock": true,
+        "rating": 4.6
+      },
+      {
+        "id": "DI509",
+        "name": "Metal Candle Stand Set",
+        "description": "Set of two elegant gold-finish metal candle stands.",
+        "price": 1599,
+        "material_or_ingredients": "Iron, Gold Plating",
+        "tags": [
+          "candle stand",
+          "metal",
+          "decor",
+          "luxury"
+        ],
+        "in_stock": true,
+        "rating": 4.9
+      },
+      {
+        "id": "DI510",
+        "name": "Festive LED Lantern",
+        "description": "Battery-operated lantern with intricate cut design.",
+        "price": 999,
+        "material_or_ingredients": "Metal, LED Light",
+        "tags": [
+          "lantern",
+          "festive",
+          "lighting",
+          "decor"
+        ],
+        "in_stock": true,
+        "rating": 4.7
+      }
+    ]
+  },
+  "metadata": {
+    "total_products": 50,
+    "currency": "INR",
+    "version": "1.0",
+    "last_updated": "2024-06-15T10:00:00Z"
+  }
+}

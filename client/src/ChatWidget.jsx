@@ -6,7 +6,7 @@ const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000'
 export default function ChatWidget() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState([
-    { text: 'Hi there! 👋 Welcome to Flipkart!', role: 'ai', time: Date.now() },
+    { text: 'Hi there! 👋 Welcome to AJ Creations!', role: 'ai', time: Date.now() },
     { text: 'How can I help you with your shopping today?', role: 'ai', time: Date.now() },
   ])
   const [input, setInput] = useState('')
@@ -73,10 +73,10 @@ export default function ChatWidget() {
       const data = await response.json()
       console.log('✅ API response:', data)
 
-      const aiMessage = { 
-        text: data.reply || 'No response from server', 
-        role: 'ai', 
-        time: Date.now() 
+      const aiMessage = {
+        text: data.reply || 'No response from server',
+        role: 'ai',
+        time: Date.now()
       }
       setMessages(prev => [...prev, aiMessage])
     } catch (error) {
@@ -111,7 +111,7 @@ export default function ChatWidget() {
       <div className="chat-header-custom">
         <div className="header-left">
           <div className="header-avatar">🛍️</div>
-          <div className="header-title">Flipkart Shop Assistant</div>
+          <div className="header-title">AJ Creations Assistant</div>
         </div>
         <button onClick={() => setOpen(false)} className="chat-close-btn">
           ✕
@@ -165,8 +165,8 @@ export default function ChatWidget() {
           rows={1}
           disabled={isTyping}
         />
-        <button 
-          onClick={sendMessage} 
+        <button
+          onClick={sendMessage}
           className="chat-send-btn"
           disabled={!input.trim() || isTyping}
         >
