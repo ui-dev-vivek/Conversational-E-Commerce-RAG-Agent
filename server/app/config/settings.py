@@ -24,6 +24,19 @@ class Settings(BaseSettings):
     anthropic_model: Optional[str] = None
     anthropic_api_base: Optional[str] = None
     
+<<<<<<< HEAD
+=======
+    huggingface_api_key: Optional[str] = None
+    huggingface_embedding_model: Optional[str] = None
+    
+    # Vector Store Configuration
+    vector_store_type: str = "chroma"
+    chroma_db_path: Optional[str] = None
+    chroma_collection_name: Optional[str] = None
+    
+    def embadding_model(self):
+        return self.huggingface_embedding_model
+>>>>>>> 3111f70e589ab7b0a94810f7f151575630b441fd
     
     class Config:
         env_file = ".env"

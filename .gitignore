@@ -3,3 +3,13 @@
 
 # VS Code Configuration
 **/.vscode/
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+.DS_Store
+.idea/
+**__pycache__/
+**/__pycache__/
+**__pycache__/*/
+*.iml

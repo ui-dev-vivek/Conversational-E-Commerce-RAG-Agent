@@ -3,6 +3,7 @@
 ## ✅ What's Implemented
 
 ### Backend (FastAPI)
+
 - **Chat endpoint**: `POST /api/chat/message`
   - Accepts: `{ "message": "user text" }`
   - Returns: `{ "reply": "bot response" }`
@@ -11,6 +12,7 @@
 - **Other endpoints**: Auth, Products, Orders (placeholder implementations)
 
 ### Frontend (React + Deep Chat)
+
 - **Deep Chat UI**: Premium chat widget using `deep-chat-react` library
 - **Custom styling**: Gradient header, modern message bubbles, smooth animations
 - **API integration**: Connects to backend at `http://localhost:8000/api/chat/message`
@@ -54,6 +56,7 @@ curl -X 'POST' \
 ```
 
 **Expected Response:**
+
 ```json
 {
   "reply": "I received your message: 'hi'. How can I help you with our products?"
@@ -90,7 +93,7 @@ DB_NAME=ecommerce_db
 DEBUG=true
 ```
 
-*Note: If DB credentials are not provided, SQLite will be used as fallback.*
+_Note: If DB credentials are not provided, SQLite will be used as fallback._
 
 ## 📁 Project Structure
 
@@ -145,24 +148,27 @@ The chat widget includes:
 ### Code Snippets:
 
 **Frontend (ChatWidget.jsx):**
+
 ```javascript
 const requestInterceptor = (requestDetails) => {
-  const body = JSON.parse(requestDetails.body || '{}')
-  const userMessage = body.messages?.[body.messages.length - 1]?.text || body.text || ''
-  
-  requestDetails.body = JSON.stringify({ message: userMessage })
-  return requestDetails
-}
+  const body = JSON.parse(requestDetails.body || "{}");
+  const userMessage =
+    body.messages?.[body.messages.length - 1]?.text || body.text || "";
+
+  requestDetails.body = JSON.stringify({ message: userMessage });
+  return requestDetails;
+};
 
 const responseInterceptor = (response) => {
   if (response.reply) {
-    return { text: response.reply, role: 'ai' }
+    return { text: response.reply, role: "ai" };
   }
-  return { text: 'Sorry, I did not understand that.', role: 'ai' }
-}
+  return { text: "Sorry, I did not understand that.", role: "ai" };
+};
 ```
 
 **Backend (chat.py):**
+
 ```python
 class ChatMessage(BaseModel):
     message: str
@@ -190,15 +196,18 @@ To make this production-ready:
 ## 🐛 Troubleshooting
 
 ### Backend not starting?
+
 - Check if port 8000 is available
 - Verify Python dependencies are installed: `pip install -r requirements.txt`
 
 ### Frontend not connecting?
+
 - Ensure backend is running at `http://localhost:8000`
 - Check browser console for CORS errors
 - Verify `VITE_API_BASE` environment variable
 
 ### Deep Chat not showing?
+
 - Check if `deep-chat-react` is installed: `npm list deep-chat-react`
 - Open browser DevTools and check for React errors
 

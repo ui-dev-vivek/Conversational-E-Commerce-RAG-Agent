@@ -14,6 +14,7 @@ server/
 │   │   ├── __init__.py
 │   │   ├── config.py                # Pydantic Settings for env vars, DB, LLM, RAG configs
 │   │   └── constants.py             # Global constants and app-wide settings
+        |    llmbase.py                # Base LLM class with factory pattern
 │   │
 │   ├── rag/                         # ⭐ RAG PIPELINE (Retrieval-Augmented Generation)
 │   │   ├── __init__.py
@@ -174,28 +175,32 @@ server/
 ## 🎯 Folder & File Purposes
 
 ### 1️⃣ **`app/core/`** - Core Application Configuration
-| File | Purpose |
-|------|---------|
-| `config.py` | **Main configuration using Pydantic Settings** - Loads all env vars (API keys, DB URLs, LLM settings, RAG parameters). Use this instead of `app/config/settings.py` |
-| `constants.py` | Global constants: API versions, max tokens, chunk sizes, timeouts |
+
+| File           | Purpose                                                                                                                                                             |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `config.py`    | **Main configuration using Pydantic Settings** - Loads all env vars (API keys, DB URLs, LLM settings, RAG parameters). Use this instead of `app/config/settings.py` |
+| `constants.py` | Global constants: API versions, max tokens, chunk sizes, timeouts                                                                                                   |
 
 ### 2️⃣ **`app/rag/`** - RAG Pipeline Components
-| Folder | Purpose |
-|--------|---------|
-| `embeddings/` | Text embedding models - wraps sentence-transformers or OpenAI embeddings |
-| `vectorstore/` | Vector database (ChromaDB) - stores product embeddings for retrieval |
-| `retrievers/` | Document retrieval strategies - semantic similarity, hybrid BM25+semantic |
-| `prompts/` | System prompts & instruction templates for LLM |
+
+| Folder         | Purpose                                                                   |
+| -------------- | ------------------------------------------------------------------------- |
+| `embeddings/`  | Text embedding models - wraps sentence-transformers or OpenAI embeddings  |
+| `vectorstore/` | Vector database (ChromaDB) - stores product embeddings for retrieval      |
+| `retrievers/`  | Document retrieval strategies - semantic similarity, hybrid BM25+semantic |
+| `prompts/`     | System prompts & instruction templates for LLM                            |
 
 **Flow**: Raw text → Embeddings → VectorStore → Retriever → Context for LLM
 
 ### 3️⃣ **`app/agents/`** - Agent Orchestration (LangGraph)
-| Folder | Purpose |
-|--------|---------|
-| `tools/` | **All tools for agents** (SearchProductsTool, GetOrderStatusTool, etc.) |
-| `chains/` | Agent executor, RAG chain, and routing logic |
+
+| Folder    | Purpose                                                                 |
+| --------- | ----------------------------------------------------------------------- |
+| `tools/`  | **All tools for agents** (SearchProductsTool, GetOrderStatusTool, etc.) |
+| `chains/` | Agent executor, RAG chain, and routing logic                            |
 
 **Key files**:
+
 - `tools/product_tools.py` → Search & filter products
 - `tools/order_tools.py` → Get order status, history
 - `tools/cart_tools.py` → Add to cart, checkout
@@ -204,79 +209,94 @@ server/
 - `chains/routing_chain.py` → Route user query to agent/RAG/simple LLM
 
 ### 4️⃣ **`app/memory/`** - Conversation Memory Management
-| File | Purpose |
-|------|---------|
-| `chat_history/database_history.py` | **Persistent storage** - Save conversations to database |
-| `chat_history/memory_history.py` | **Fast in-memory** - Session-level conversations |
-| `context_manager.py` | Manages context window, summarization for long conversations |
+
+| File                               | Purpose                                                      |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `chat_history/database_history.py` | **Persistent storage** - Save conversations to database      |
+| `chat_history/memory_history.py`   | **Fast in-memory** - Session-level conversations             |
+| `context_manager.py`               | Manages context window, summarization for long conversations |
 
 ### 5️⃣ **`app/services/`** - Business Logic Layer
-| Folder | Purpose |
-|--------|---------|
-| `llm/` | LLM initialization & management (OpenRouter, Anthropic, local) |
-| `rag/` | High-level RAG orchestration - document ingestion, retrieval pipeline |
-| `agent/` | High-level agent orchestration - tool execution, state management |
+
+| Folder   | Purpose                                                               |
+| -------- | --------------------------------------------------------------------- |
+| `llm/`   | LLM initialization & management (OpenRouter, Anthropic, local)        |
+| `rag/`   | High-level RAG orchestration - document ingestion, retrieval pipeline |
+| `agent/` | High-level agent orchestration - tool execution, state management     |
 
 **These are "orchestrator" services that tie RAG + agents + memory together**
 
 ### 6️⃣ **`app/routes/`** - FastAPI Endpoints
-| File | Endpoints | Purpose |
-|------|-----------|---------|
-| `auth.py` | `/api/auth/login`, `/register` | User authentication |
-| `products.py` | `/api/products/{id}`, `/search` | Product listing & search |
-| `orders.py` | `/api/orders`, `/orders/{id}` | Order management |
-| `chat.py` | **`POST /api/chat/message`** | Main chat endpoint - uses agent/RAG |
+
+| File          | Endpoints                       | Purpose                             |
+| ------------- | ------------------------------- | ----------------------------------- |
+| `auth.py`     | `/api/auth/login`, `/register`  | User authentication                 |
+| `products.py` | `/api/products/{id}`, `/search` | Product listing & search            |
+| `orders.py`   | `/api/orders`, `/orders/{id}`   | Order management                    |
+| `chat.py`     | **`POST /api/chat/message`**    | Main chat endpoint - uses agent/RAG |
 
 ### 7️⃣ **`app/models/`** - Database Models
-| Models | Purpose |
-|--------|---------|
-| `User` | User accounts, authentication |
-| `Product` | E-commerce products catalog |
-| `Order`, `OrderItem` | Orders and line items |
-| `Category` | Product categories |
-| `Address` | User shipping addresses |
+
+| Models               | Purpose                       |
+| -------------------- | ----------------------------- |
+| `User`               | User accounts, authentication |
+| `Product`            | E-commerce products catalog   |
+| `Order`, `OrderItem` | Orders and line items         |
+| `Category`           | Product categories            |
+| `Address`            | User shipping addresses       |
 
 ### 8️⃣ **`app/schemas/`** - Pydantic Request/Response Schemas
+
 Define request bodies & responses:
+
 ```python
 class ChatMessageRequest(BaseModel):
     user_id: str
     message: str
-    
+
 class ChatMessageResponse(BaseModel):
     reply: str
     sources: List[Document]
 ```
 
 ### 9️⃣ **`app/exceptions/`** - Custom Exceptions
+
 Define custom errors:
+
 - `RAGException` - Retrieval or embedding errors
 - `AgentException` - Tool execution or agent errors
 - `ToolException` - Tool not found, execution failed
 - `ValidationException` - Input validation failed
 
 ### 🔟 **`app/middlewares/`** - FastAPI Middleware
+
 - `error_handler.py` - Global exception catching
 - `logging_middleware.py` - Log all API calls
 
 ### 1️⃣1️⃣ **`app/constants/`** - Global Constants
+
 - `messages.py` - Error messages, status codes
 - `enums.py` - OrderStatus, UserRole, ChatState enums
 
 ### 1️⃣2️⃣ **`app/validators/`** - Input Validation
+
 Custom validators for:
+
 - Message length & content
 - Query sanitization
 - Parameter validation
 
 ### 1️⃣3️⃣ **`app/dependencies/`** - Dependency Injection
+
 FastAPI dependencies that provide:
+
 - Database sessions
 - LLM instances
 - RAG pipeline
 - Agent service
 
 ### 1️⃣4️⃣ **`tests/`** - Test Suite
+
 ```
 tests/
 ├── unit/           # Test individual components (retrievers, tools, etc.)
@@ -285,17 +305,21 @@ tests/
 ```
 
 ### 1️⃣5️⃣ **`scripts/`** - Utility Scripts
+
 - `init_db.py` - Create database tables & seed data
 - `populate_embeddings.py` - Index products to ChromaDB for RAG
 
 ### 1️⃣6️⃣ **`data/`** - Seed Data
+
 Store:
+
 - Product catalog JSON
 - FAQ documents
 - Knowledge base files
 - Test data
 
 ### 1️⃣7️⃣ **`logs/`** - Application Logs
+
 - `app.log` - General logs
 - `error.log` - Error traces
 
@@ -357,21 +381,25 @@ Frontend displays response + sources
 ## ⚙️ How to Use This Structure
 
 ### **Adding a New Tool**
+
 1. Create `app/agents/tools/my_tool.py` (inherit from `base_tool.py`)
 2. Register in `app/agents/tools/tool_registry.py`
 3. Use in `app/agents/chains/agent_executor.py`
 
 ### **Adding a New Endpoint**
+
 1. Create `app/routes/my_feature.py`
 2. Include router in `app/main.py`
 3. Use dependency injection for LLM, RAG, agent services
 
 ### **Adding a New Retriever Strategy**
+
 1. Create `app/rag/retrievers/my_retriever.py` (inherit from `base_retriever.py`)
 2. Register in `app/rag/vectorstore/store_factory.py`
 3. Use in RAG pipeline
 
 ### **Adding a New Memory Backend**
+
 1. Create `app/memory/chat_history/my_history.py` (inherit from `base_history.py`)
 2. Use in routes for persistence
 
@@ -380,6 +408,7 @@ Frontend displays response + sources
 ## 🎓 Best Practices
 
 ✅ **DO**:
+
 - Keep business logic in `services/`
 - Keep API logic in `routes/`
 - Use dependency injection for services
@@ -389,6 +418,7 @@ Frontend displays response + sources
 - Store configurations in `core/config.py`
 
 ❌ **DON'T**:
+
 - Put business logic in routes
 - Hardcode API keys (use `.env`)
 - Create LLMs directly in routes (use factories)
@@ -399,39 +429,42 @@ Frontend displays response + sources
 
 ## 📝 Summary Table
 
-| Folder | Responsibility | Key Pattern |
-|--------|-----------------|-------------|
-| `core/` | Global config & constants | Pydantic Settings |
-| `rag/` | Embeddings, retrieval, prompts | Pipeline pattern |
-| `agents/` | Tool definitions & execution | Factory + Registry |
-| `memory/` | Conversation storage | Adapter pattern |
-| `services/` | Business logic orchestration | Service layer |
-| `routes/` | API endpoints | FastAPI routers |
-| `models/` | Database schema | SQLAlchemy ORM |
-| `schemas/` | Data validation | Pydantic models |
-| `exceptions/` | Error handling | Custom exceptions |
-| `validators/` | Input validation | Custom validators |
-| `middlewares/` | Cross-cutting concerns | Middleware pattern |
-| `dependencies/` | Dependency injection | DI pattern |
-| `tests/` | Quality assurance | Pytest |
-| `scripts/` | Admin utilities | Click CLI |
+| Folder          | Responsibility                 | Key Pattern        |
+| --------------- | ------------------------------ | ------------------ |
+| `core/`         | Global config & constants      | Pydantic Settings  |
+| `rag/`          | Embeddings, retrieval, prompts | Pipeline pattern   |
+| `agents/`       | Tool definitions & execution   | Factory + Registry |
+| `memory/`       | Conversation storage           | Adapter pattern    |
+| `services/`     | Business logic orchestration   | Service layer      |
+| `routes/`       | API endpoints                  | FastAPI routers    |
+| `models/`       | Database schema                | SQLAlchemy ORM     |
+| `schemas/`      | Data validation                | Pydantic models    |
+| `exceptions/`   | Error handling                 | Custom exceptions  |
+| `validators/`   | Input validation               | Custom validators  |
+| `middlewares/`  | Cross-cutting concerns         | Middleware pattern |
+| `dependencies/` | Dependency injection           | DI pattern         |
+| `tests/`        | Quality assurance              | Pytest             |
+| `scripts/`      | Admin utilities                | Click CLI          |
 
 ---
 
 ## 🚀 Next Steps
 
 1. **Move existing code**:
+
    - Move `app/config/settings.py` → `app/core/config.py`
    - Move `app/rag/embedder.py` → `app/rag/embeddings/local_embedder.py`
    - Move `app/rag/retriever.py` → `app/rag/retrievers/similarity_retriever.py`
    - Consolidate tools into `app/agents/tools/`
 
 2. **Implement missing layers**:
+
    - `app/services/llm/llm_factory.py` - Create LLM instances
    - `app/services/rag/rag_pipeline.py` - Orchestrate RAG
    - `app/services/agent/agent_service.py` - Orchestrate agents
 
 3. **Add middleware & error handling**:
+
    - Global error handler in `app/middlewares/`
    - Custom exceptions in `app/exceptions/`
 
