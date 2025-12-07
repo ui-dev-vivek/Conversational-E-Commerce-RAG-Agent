@@ -287,6 +287,4 @@ storybook-static
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
-__pycache__
-/__pycache__
-__pycache__/*
+__pycache__/
