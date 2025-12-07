@@ -15,12 +15,7 @@ def create_app() -> FastAPI:
     )
 
     # ✅ CORS properly configure करो
-    allowed_origins = [
-        "http://localhost:3000",           # Local dev
-        "http://localhost:5173",           # Vite dev server
-        "https://3mfgg5hv-5173.inc1.devtunnels.ms",  # DevTunnel
-        "https://3mfgg5hv-5173.inc1.devtunnels.ms/",
-    ]
+    allowed_origins = ["*"]
     
     app.add_middleware(
         CORSMiddleware,

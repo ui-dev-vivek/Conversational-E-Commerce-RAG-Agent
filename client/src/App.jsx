@@ -1,26 +1,47 @@
 import { useState } from 'react'
 import './App.css'
-import ChatWidget from './ChatWidget'
+import ChatWidget, { AuthProvider } from './ChatWidget'
 
-const sampleProducts = [
-  { id: 1, title: 'Smart LED TV 43" (FHD)', price: '₹24,999', mrp: '₹39,999', rating: 4.3, image: 'https://picsum.photos/id/1069/800/600' },
-  { id: 2, title: 'Wireless Headphones', price: '₹1,499', mrp: '₹2,999', rating: 4.1, image: 'https://picsum.photos/id/1027/800/600' },
-  { id: 3, title: 'Casual Shoes - Men', price: '₹899', mrp: '₹1,599', rating: 4.0, image: 'https://picsum.photos/id/100/800/600' },
-  { id: 4, title: 'Smartphone 8GB/128GB', price: '₹12,999', mrp: '₹16,999', rating: 4.4, image: 'https://picsum.photos/id/1/800/600' },
-  { id: 5, title: 'Wrist Watch - Classic', price: '₹2,299', mrp: '₹3,999', rating: 4.2, image: 'https://picsum.photos/id/1025/800/600' },
-  { id: 6, title: 'Gaming Keyboard', price: '₹2,999', mrp: '₹4,599', rating: 4.0, image: 'https://picsum.photos/id/1050/800/600' }
-]
+// Fetch real products from API
+const fetchProducts = async () => {
+  try {
+    const response = await fetch('http://localhost:8000/api/chat/message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user_id: 'guest',
+        message: 'Show me all products'
+      })
+    })
+    const data = await response.json()
+    return data.products || []
+  } catch (error) {
+    console.error('Error fetching products:', error)
+    return []
+  }
+}
 
-const categories = [
-  { id: 1, title: 'Mobiles', image: 'https://picsum.photos/id/1060/400/300' },
-  { id: 2, title: 'Electronics', image: 'https://picsum.photos/id/1057/400/300' },
-  { id: 3, title: 'Fashion', image: 'https://picsum.photos/id/1003/400/300' },
-  { id: 4, title: 'Home', image: 'https://picsum.photos/id/1016/400/300' },
-  { id: 5, title: 'Appliances', image: 'https://picsum.photos/id/1043/400/300' },
-  { id: 6, title: 'Beauty', image: 'https://picsum.photos/id/1021/400/300' },
-  { id: 7, title: 'Toys', image: 'https://picsum.photos/id/1012/400/300' },
-  { id: 8, title: 'Sports', image: 'https://picsum.photos/id/1024/400/300' }
-]
+function App() {
+  const [chatOpen, setChatOpen] = useState(false)
+  const [chatMessage, setChatMessage] = useState('')
+
+  const handleAddToCart = (productName) => {
+    setChatMessage(`Add ${productName} to cart`)
+    setChatOpen(true)
+  }
+
+  return (
+    <AuthProvider>
+      <div id="app-root" className="main-content">
+        <Header />
+        <Banner />
+        <ProductSection onAddToCart={handleAddToCart} />
+        <Footer />
+        <ChatWidget autoOpen={chatOpen} initialMessage={chatMessage} />
+      </div>
+    </AuthProvider>
+  )
+}
 
 function Header() {
   return (
@@ -39,12 +60,11 @@ function Header() {
           </nav>
         </div>
         <div className="fk-category-strip">
-          <div className="category">Electronics</div>
-          <div className="category">Mobiles</div>
-          <div className="category">Fashion</div>
-          <div className="category">Home</div>
-          <div className="category">Appliances</div>
-          <div className="category">Beauty</div>
+          <div className="category">Women's Clothing</div>
+          <div className="category">Cosmetics</div>
+          <div className="category">Candles</div>
+          <div className="category">Soaps</div>
+          <div className="category">Home Decor</div>
         </div>
       </div>
     </header>
@@ -55,50 +75,48 @@ function Banner() {
   return (
     <section className="fk-banner">
       <div className="banner-left">
-        <h2>Big Savings on Electronics</h2>
-        <p>Up to 70% off | Limited time</p>
+        <h2>Handcrafted with Love ❤️</h2>
+        <p>Authentic Indian Handicrafts | Free Shipping</p>
         <button className="cta">Shop Now</button>
       </div>
       <div className="banner-right">
-        <img src="https://picsum.photos/id/1015/1200/500" alt="banner" />
+        <img src="https://picsum.photos/id/1015/800/400" alt="Banner" />
       </div>
     </section>
   )
 }
 
-function ProductGrid() {
+function ProductSection({ onAddToCart }) {
+  // Sample products from our database categories
+  const products = [
+    { id: 1, title: 'Elegant Cotton Kurti', price: '₹1,499', category: 'Clothing', image: 'https://picsum.photos/id/1011/400/400' },
+    { id: 2, title: 'Lavender Bliss Candle', price: '₹499', category: 'Candles', image: 'https://picsum.photos/id/1012/400/400' },
+    { id: 3, title: 'Natural Face Cream', price: '₹899', category: 'Cosmetics', image: 'https://picsum.photos/id/1013/400/400' },
+    { id: 4, title: 'Handmade Soap Set', price: '₹599', category: 'Soaps', image: 'https://picsum.photos/id/1014/400/400' },
+    { id: 5, title: 'Floral Print Saree', price: '₹2,999', category: 'Clothing', image: 'https://picsum.photos/id/1015/400/400' },
+    { id: 6, title: 'Decorative Glass Vase', price: '₹799', category: 'Decor', image: 'https://picsum.photos/id/1016/400/400' },
+  ]
+
   return (
-    <section className="fk-products">
-      <h3>Top Picks for You</h3>
-      <div className="grid">
-        {sampleProducts.map((p) => (
-          <div key={p.id} className="product-card">
-            <img src={p.image} alt={p.title} />
-            <div className="product-info">
-              <div className="product-title">{p.title}</div>
-              <div className="product-meta">
-                <span className="product-price">{p.price}</span>
-                <span className="product-mrp">{p.mrp}</span>
-                <span className="product-rating">★ {p.rating}</span>
+    <section className="product-section">
+      <h2 className="section-title">Featured Products</h2>
+      <div className="product-grid">
+        {products.map(product => (
+          <div key={product.id} className="product-card-home">
+            <img src={product.image} alt={product.title} />
+            <div className="product-details">
+              <h3>{product.title}</h3>
+              <p className="category">{product.category}</p>
+              <div className="price-row">
+                <span className="price">{product.price}</span>
+                <button
+                  className="add-to-cart-btn"
+                  onClick={() => onAddToCart(product.title)}
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
-            <button className="add-btn">Add to Cart</button>
-          </div>
-        ))}
-      </div>
-    </section>
-  )
-}
-
-function CategoriesGrid() {
-  return (
-    <section className="fk-categories">
-      <h3>Shop by Category</h3>
-      <div className="cat-grid">
-        {categories.map((c) => (
-          <div key={c.id} className="cat-card">
-            <img src={c.image} alt={c.title} />
-            <div className="cat-title">{c.title}</div>
           </div>
         ))}
       </div>
@@ -109,39 +127,27 @@ function CategoriesGrid() {
 function Footer() {
   return (
     <footer className="fk-footer">
-      <div className="footer-inner">
-        <div className="footer-col">
-          <h4>About</h4>
-          <p>About Flipkart-like demo</p>
+      <div className="container">
+        <div className="footer-content">
+          <div className="footer-col">
+            <h4>About</h4>
+            <p>AJ Creations - Authentic Indian Handicrafts</p>
+          </div>
+          <div className="footer-col">
+            <h4>Contact</h4>
+            <p>Email: support@ajcreations.in</p>
+            <p>Phone: +91-7619876249</p>
+          </div>
+          <div className="footer-col">
+            <h4>Follow Us</h4>
+            <p>Instagram | Facebook | Twitter</p>
+          </div>
         </div>
-        <div className="footer-col">
-          <h4>Help</h4>
-          <p>Payments | Shipping | Returns</p>
-        </div>
-        <div className="footer-col">
-          <h4>Follow us</h4>
-          <p>Twitter / Facebook / Instagram</p>
+        <div className="footer-bottom">
+          <p>© 2024 AJ Creations. All rights reserved.</p>
         </div>
       </div>
-      <div className="footer-bottom">© Demo — Flipkart style clone</div>
     </footer>
-  )
-}
-
-function App() {
-  return (
-    <div id="app-root">
-      <Header />
-      <main className="main-content">
-        <div className="container">
-          <Banner />
-          <CategoriesGrid />
-          <ProductGrid />
-        </div>
-      </main>
-      <ChatWidget />
-      <Footer />
-    </div>
   )
 }
 

@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     
     huggingface_api_key: Optional[str] = None
     huggingface_embedding_model: Optional[str] = None
+
+    groq_api_key: Optional[str] = None
+    groq_model: Optional[str] = None
     
     # Vector Store Configuration
     vector_store_type: str = "chroma"

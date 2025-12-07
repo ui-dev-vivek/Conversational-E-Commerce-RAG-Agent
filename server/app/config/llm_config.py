@@ -1,4 +1,5 @@
 from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from .settings import settings
 import random
 
@@ -10,6 +11,7 @@ class LLMConfig:
             'openrouter': self._configure_openrouter,
             'openai': self._configure_openai,
             'anthropic': self._configure_anthropic,
+            'groq': self._configure_groq,
         }
         switcher.get(self.PROVIDER, lambda: None)()
 
@@ -29,7 +31,15 @@ class LLMConfig:
         self.MODEL = settings.anthropic_model
         self.API_KEY = settings.anthropic_api_key
         self.API_BASE = settings.anthropic_api_base
+
+    def _configure_groq(self):
+        self.MODEL = settings.groq_model
+        self.API_KEY = settings.groq_api_key
+
     def invoke(self):
+        if self.PROVIDER == 'groq':
+            return  ChatGroq(model_name=self.MODEL, api_key=self.API_KEY, temperature=0.7)
+
         return ChatOpenAI(
             model=self.MODEL,
             openai_api_key=self.API_KEY,

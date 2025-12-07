@@ -10,6 +10,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Boolean,
+    JSON,
 )
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
@@ -24,11 +25,13 @@ class User(Base):
     username: Mapped[str] = mapped_column(String(150), unique=True, nullable=False)
     email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
+    full_name: Mapped[str] = mapped_column(String(255), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     addresses = relationship("Address", back_populates="user")
     orders = relationship("Order", back_populates="user")
+    cart_items = relationship("CartItem", back_populates="user")
 
 
 class Address(Base):
@@ -67,9 +70,30 @@ class Product(Base):
     currency: Mapped[str] = mapped_column(String(10), default="INR")
     stock: Mapped[int] = mapped_column(Integer, default=0)
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"), nullable=True)
+    
+    # Enhanced fields for better search
+    tags = mapped_column(JSON, nullable=True)  # ["kurti", "cotton", "floral"]
+    rating: Mapped[float] = mapped_column(Float, default=0.0)
+    image_url: Mapped[str] = mapped_column(String(500), nullable=True)
+    in_stock: Mapped[bool] = mapped_column(Boolean, default=True)
+    material: Mapped[str] = mapped_column(String(100), nullable=True)
 
     category = relationship("Category", back_populates="products")
     order_items = relationship("OrderItem", back_populates="product")
+    cart_items = relationship("CartItem", back_populates="product")
+
+
+class CartItem(Base):
+    __tablename__ = "cart_items"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), nullable=False)
+    quantity: Mapped[int] = mapped_column(Integer, default=1)
+    added_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", back_populates="cart_items")
+    product = relationship("Product", back_populates="cart_items")
 
 
 class Order(Base):
@@ -80,6 +104,8 @@ class Order(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     status: Mapped[str] = mapped_column(String(50), default="processing")
     total_amount: Mapped[float] = mapped_column(Float, default=0.0)
+    tracking_id: Mapped[str] = mapped_column(String(100), nullable=True)
+    estimated_delivery: Mapped[str] = mapped_column(String(50), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     user = relationship("User", back_populates="orders")
