@@ -1,127 +1,149 @@
-import { useState } from 'react'
-import './App.css'
-import ChatWidget, { AuthProvider } from './ChatWidget'
-
-// Fetch real products from API
-const fetchProducts = async () => {
-  try {
-    const response = await fetch('http://localhost:8000/api/chat/message', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        user_id: 'guest',
-        message: 'Show me all products'
-      })
-    })
-    const data = await response.json()
-    return data.products || []
-  } catch (error) {
-    console.error('Error fetching products:', error)
-    return []
-  }
-}
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import './App.css';
+import Products from './pages/Products';
+import Cart from './pages/Cart';
+import Auth from './pages/Auth';
+import Checkout from './pages/Checkout';
+import apiService from './api/apiService';
+import ChatWidget, { AuthProvider } from './ChatWidget';
 
 function App() {
-  const [chatOpen, setChatOpen] = useState(false)
-  const [chatMessage, setChatMessage] = useState('')
-
-  const handleAddToCart = (productName) => {
-    setChatMessage(`Add ${productName} to cart`)
-    setChatOpen(true)
-  }
-
   return (
     <AuthProvider>
-      <div id="app-root" className="main-content">
-        <Header />
-        <Banner />
-        <ProductSection onAddToCart={handleAddToCart} />
-        <Footer />
-        <ChatWidget autoOpen={chatOpen} initialMessage={chatMessage} />
-      </div>
+      <Router>
+        <div className="app">
+          <Header />
+          <main className="main-content">
+            <Routes>
+
+              <Route path="/" element={<Home />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/login" element={<Auth />} />
+              <Route path="/checkout" element={<Checkout />} />
+            </Routes>
+          </main>
+          <Footer />
+          <ChatWidget />
+        </div>
+      </Router>
     </AuthProvider>
-  )
+  );
 }
 
 function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const userData = await apiService.getCurrentUser();
+        setUser(userData);
+        setIsLoggedIn(true);
+      } catch (err) {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+      }
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    apiService.clearToken();
+    setIsLoggedIn(false);
+    setUser(null);
+    navigate('/');
+  };
+
   return (
     <header className="fk-header">
       <div className="container">
         <div className="fk-top">
-          <div className="fk-logo">AJ Creations</div>
-          <div className="fk-search">
-            <input placeholder="Search for products, brands and more" />
-            <button>Search</button>
-          </div>
+          <Link to="/" className="fk-logo">AJ Creations</Link>
           <nav className="fk-nav">
-            <button className="nav-btn">Login</button>
-            <button className="nav-btn">More</button>
-            <button className="nav-btn cart">Cart</button>
+            <Link to="/products" className="nav-btn">Products</Link>
+            {isLoggedIn ? (
+              <>
+                <span className="user-name">Hi, {user?.username || 'User'}</span>
+                <Link to="/cart" className="nav-btn cart">🛒 Cart</Link>
+                <button onClick={handleLogout} className="nav-btn">Logout</button>
+              </>
+            ) : (
+              <Link to="/login" className="nav-btn">Login</Link>
+            )}
           </nav>
-        </div>
-        <div className="fk-category-strip">
-          <div className="category">Women's Clothing</div>
-          <div className="category">Cosmetics</div>
-          <div className="category">Candles</div>
-          <div className="category">Soaps</div>
-          <div className="category">Home Decor</div>
         </div>
       </div>
     </header>
-  )
+  );
 }
 
-function Banner() {
-  return (
-    <section className="fk-banner">
-      <div className="banner-left">
-        <h2>Handcrafted with Love ❤️</h2>
-        <p>Authentic Indian Handicrafts | Free Shipping</p>
-        <button className="cta">Shop Now</button>
-      </div>
-      <div className="banner-right">
-        <img src="https://picsum.photos/id/1015/800/400" alt="Banner" />
-      </div>
-    </section>
-  )
-}
-
-function ProductSection({ onAddToCart }) {
-  // Sample products from our database categories
-  const products = [
-    { id: 1, title: 'Elegant Cotton Kurti', price: '₹1,499', category: 'Clothing', image: 'https://picsum.photos/id/1011/400/400' },
-    { id: 2, title: 'Lavender Bliss Candle', price: '₹499', category: 'Candles', image: 'https://picsum.photos/id/1012/400/400' },
-    { id: 3, title: 'Natural Face Cream', price: '₹899', category: 'Cosmetics', image: 'https://picsum.photos/id/1013/400/400' },
-    { id: 4, title: 'Handmade Soap Set', price: '₹599', category: 'Soaps', image: 'https://picsum.photos/id/1014/400/400' },
-    { id: 5, title: 'Floral Print Saree', price: '₹2,999', category: 'Clothing', image: 'https://picsum.photos/id/1015/400/400' },
-    { id: 6, title: 'Decorative Glass Vase', price: '₹799', category: 'Decor', image: 'https://picsum.photos/id/1016/400/400' },
-  ]
+function Home() {
+  const navigate = useNavigate();
 
   return (
-    <section className="product-section">
-      <h2 className="section-title">Featured Products</h2>
-      <div className="product-grid">
-        {products.map(product => (
-          <div key={product.id} className="product-card-home">
-            <img src={product.image} alt={product.title} />
-            <div className="product-details">
-              <h3>{product.title}</h3>
-              <p className="category">{product.category}</p>
-              <div className="price-row">
-                <span className="price">{product.price}</span>
-                <button
-                  className="add-to-cart-btn"
-                  onClick={() => onAddToCart(product.title)}
-                >
-                  Add to Cart
-                </button>
-              </div>
+    <div className="home-page">
+      <section className="hero-banner">
+        <div className="hero-content">
+          <h1>Handcrafted with Love ❤️</h1>
+          <p className="hero-subtitle">Authentic Indian Handicrafts</p>
+          <p className="hero-description">
+            Discover unique, handmade products crafted by skilled artisans.
+            From traditional clothing to natural cosmetics, candles, soaps, and home decor.
+          </p>
+          <button className="cta-btn" onClick={() => navigate('/products')}>
+            Shop Now
+          </button>
+        </div>
+        <div className="hero-image">
+          <img src="https://placehold.co/800x600/6c5ce7/ffffff?text=Handcrafted+Collection" alt="Handcrafted Products" />
+        </div>
+      </section>
+
+      <section className="features">
+        <div className="feature-card">
+          <div className="feature-icon">🎨</div>
+          <h3>Handcrafted</h3>
+          <p>Every product is made with care by skilled artisans</p>
+        </div>
+        <div className="feature-card">
+          <div className="feature-icon">🌿</div>
+          <h3>Natural</h3>
+          <p>Organic and eco-friendly materials</p>
+        </div>
+        <div className="feature-card">
+          <div className="feature-icon">🚚</div>
+          <h3>Free Shipping</h3>
+          <p>On all orders across India</p>
+        </div>
+        <div className="feature-card">
+          <div className="feature-icon">💯</div>
+          <h3>Authentic</h3>
+          <p>100% genuine Indian handicrafts</p>
+        </div>
+      </section>
+
+      <section className="categories-preview">
+        <h2>Shop by Category</h2>
+        <div className="category-grid">
+          {["Women's Clothing", "Cosmetics", "Candles", "Soaps", "Home Decor"].map(cat => (
+            <div key={cat} className="category-card" onClick={() => navigate('/products')}>
+              <img src={`https://placehold.co/300x300/a29bfe/ffffff?text=${cat.replace(' ', '+')}`} alt={cat} />
+              <h3>{cat}</h3>
             </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  )
+          ))}
+        </div>
+      </section>
+    </div>
+  );
 }
 
 function Footer() {
@@ -132,6 +154,7 @@ function Footer() {
           <div className="footer-col">
             <h4>About</h4>
             <p>AJ Creations - Authentic Indian Handicrafts</p>
+            <p>Supporting local artisans and traditional crafts</p>
           </div>
           <div className="footer-col">
             <h4>Contact</h4>
@@ -148,7 +171,8 @@ function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
 
-export default App
+export default App;
+
