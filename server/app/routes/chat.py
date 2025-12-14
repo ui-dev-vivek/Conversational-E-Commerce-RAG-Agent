@@ -8,9 +8,13 @@ import logging
 import re
 
 from ..config.llm_config import LLM
-from ..validators.chat_validator import ChatMessageInput, ChatMessageOutput
+from ..validators.chat_validator import (
+    ChatMessageInput, ChatMessageOutput, 
+    ProductData, CartSummary, CartItemData, OrderData
+)
 from ..services.rag.retrieval import Retrieval
 from ..agents.tools.tool_registry import tool_registry
+from ..services.llm_intent_detector import detect_intent_with_llm, extract_tool_parameters
 
 logger = logging.getLogger(__name__)
 
@@ -50,50 +54,6 @@ def extract_keywords(query: str) -> str:
     
     # If no keywords found, return original query
     return result if result else query
-
-
-def detect_intent(message: str) -> dict:
-    """
-    Detect user intent from message to route to appropriate handler.
-    
-    Returns:
-        dict with 'type' (rag/tool) and 'tool_name' if applicable
-    """
-    message_lower = message.lower()
-    
-    # Product search intents - IMPROVED
-    if any(word in message_lower for word in ['search', 'find', 'show', 'looking for', 'want', 'need', 'dhundo', 'dikhao']):
-        # Generic product query - show all products
-        if any(word in message_lower for word in ['product', 'products', 'item', 'items', 'all', 'everything']):
-            return {'type': 'tool', 'tool_name': 'search_products', 'query': message}
-        # Specific product search
-        elif any(word in message_lower for word in ['kurti', 'saree', 'candle', 'soap', 'cosmetic', 'dress', 'cotton', 'lavender']):
-            return {'type': 'tool', 'tool_name': 'search_products', 'query': message}
-    
-    # Category listing
-    if any(word in message_lower for word in ['categories', 'category', 'types', 'what do you sell', 'kya hai']):
-        return {'type': 'tool', 'tool_name': 'list_categories'}
-    
-    # Cart operations
-    if 'cart' in message_lower:
-        if any(word in message_lower for word in ['add', 'put', 'daalo']):
-            return {'type': 'tool', 'tool_name': 'add_to_cart'}
-        elif any(word in message_lower for word in ['remove', 'delete', 'hatao']):
-            return {'type': 'tool', 'tool_name': 'remove_from_cart'}
-        elif any(word in message_lower for word in ['show', 'view', 'see', 'dikhao', 'check']):
-            return {'type': 'tool', 'tool_name': 'view_cart'}
-        elif any(word in message_lower for word in ['clear', 'empty', 'khali']):
-            return {'type': 'tool', 'tool_name': 'clear_cart'}
-    
-    # Order operations
-    if any(word in message_lower for word in ['order', 'orders']):
-        if any(word in message_lower for word in ['track', 'where', 'status', 'kaha', 'delivery']):
-            return {'type': 'tool', 'tool_name': 'track_order'}
-        elif any(word in message_lower for word in ['list', 'show', 'my', 'history', 'dikhao']):
-            return {'type': 'tool', 'tool_name': 'list_orders'}
-    
-    # Default to RAG for general questions
-    return {'type': 'rag'}
 
 
 def format_context(docs):
@@ -157,97 +117,55 @@ async def chat_message(payload: ChatMessageInput):
     2. Route to appropriate handler:
        - RAG: General questions, FAQs, policies
        - Tools: Product search, cart, orders
-    3. Get response and store in history
+    3. Extract structured data and return response
     """
-    user_id = payload.user_id.strip()
+    user_id_str = payload.user_id.strip()
     user_message = payload.message.strip()
     
+    # Convert user_id to integer if possible (for authenticated users)
+    user_id_int = None
     try:
-        logger.info(f"💬 User {user_id}: {user_message}")
+        user_id_int = int(user_id_str)
+    except (ValueError, TypeError):
+        # If not an integer, it's an anonymous user with a string ID
+        pass
+    
+    try:
+        logger.info(f"💬 User {user_id_str}: {user_message}")
         
         # Create user chat history if it doesn't exist
-        if user_id not in user_histories:
-            user_histories[user_id] = ChatMessageHistory()
+        if user_id_str not in user_histories:
+            user_histories[user_id_str] = ChatMessageHistory()
         
-        history = user_histories[user_id]
+        history = user_histories[user_id_str]
         
-        # 1️⃣ DETECT INTENT
-        intent = detect_intent(user_message)
-        logger.info(f"🎯 Detected intent: {intent}")
+        # Initialize response variables
+        reply_text = ""
+        tool_name = None
+        products_data = None
+        cart_data = None
+        order_data = None
+        sources = None
+        
+        # 1️⃣ DETECT INTENT USING LLM
+        intent_data = detect_intent_with_llm(user_message)
+        logger.info(f"🤖 LLM Intent Analysis: {intent_data}")
         
         # 2️⃣ ROUTE TO APPROPRIATE HANDLER
-        if intent['type'] == 'tool':
+        if intent_data['should_use_tool'] and intent_data['tool_name']:
             # AGENT TOOL EXECUTION
-            tool_name = intent['tool_name']
+            tool_name = intent_data['tool_name']
             logger.info(f"🔧 Executing tool: {tool_name}")
             
-            # Prepare tool parameters based on tool type
-            tool_params = {}
+            # Prepare tool parameters from LLM output
+            tool_params = extract_tool_parameters(tool_name, user_message, intent_data.get('parameters', {}))
             
-            # Product tools don't need user_id
-            if tool_name == 'search_products':
-                # Extract keywords from natural language query
-                keywords = extract_keywords(user_message)
-                tool_params['query'] = keywords
-                tool_params['limit'] = 5
-                logger.info(f"🔍 Extracted keywords: '{keywords}' from '{user_message}'")
-            elif tool_name == 'list_categories':
-                pass  # No parameters needed
-            elif tool_name == 'get_product_details':
-                # Extract product ID from message if present
-                tool_params['product_id'] = user_message
-            # Cart and order tools need user_id (integer from database)
-            elif tool_name == 'add_to_cart':
-                # Extract product name from message
-                # "Add Printed Palazzo Set to cart" -> "Printed Palazzo Set"
-                from app.config.database import SessionLocal
-                from app.models.models import Product
-                
-                # Try to extract product name
-                message_lower = user_message.lower()
-                # Remove common words
-                product_name = user_message
-                for word in ['add', 'to', 'cart', 'put', 'daalo', 'please']:
-                    product_name = product_name.replace(word, '').replace(word.title(), '')
-                product_name = product_name.strip()
-                
-                # Search for product in database
-                db = SessionLocal()
-                try:
-                    product = db.query(Product).filter(
-                        Product.name.ilike(f"%{product_name}%")
-                    ).first()
-                    
-                    if product:
-                        tool_params['user_id'] = 1  # Default user
-                        tool_params['product_id'] = product.sku
-                        tool_params['quantity'] = 1
-                        logger.info(f"🛒 Found product: {product.name} (SKU: {product.sku})")
-                    else:
-                        # Product not found, return error
-                        logger.warning(f"⚠️ Product not found: {product_name}")
-                        tool_result = {
-                            "success": False,
-                            "message": f"Sorry, I couldn't find '{product_name}' in our catalog. Please try searching for products first."
-                        }
-                        reply_text = format_tool_response(tool_name, tool_result, user_message)
-                        sources = [f"Tool: {tool_name}"]
-                        history.add_message(HumanMessage(content=user_message))
-                        history.add_message(AIMessage(content=reply_text))
-                        return ChatMessageOutput(
-                            user_id=user_id,
-                            message=user_message,
-                            reply=reply_text,
-                            sources=sources
-                        )
-                finally:
-                    db.close()
-                    
-            elif tool_name in ['view_cart', 'remove_from_cart', 'clear_cart',
-                               'get_order_status', 'list_orders', 'create_order', 'track_order']:
-                # For now, use a default user ID (1 = test user)
-                # In production, this should come from JWT token
-                tool_params['user_id'] = 1  # Default to test user
+            # Add user_id to cart/order tools
+            if tool_name in ['view_cart', 'remove_from_cart', 'clear_cart', 'add_to_cart',
+                               'list_orders', 'track_order', 'create_order']:
+                # Use authenticated user_id if available, otherwise default to 1
+                tool_params['user_id'] = user_id_int if user_id_int else 1
+                logger.info(f"📊 Using user_id={tool_params['user_id']} for {tool_name}")
             
             # Execute tool
             tool_result = tool_registry.execute_tool(tool_name, **tool_params)
@@ -256,6 +174,50 @@ async def chat_message(payload: ChatMessageInput):
             reply_text = format_tool_response(tool_name, tool_result, user_message)
             sources = [f"Tool: {tool_name}"]
             
+            # ✅ NEW: Extract structured data from tool result
+            if tool_name == 'search_products' and tool_result.get('success'):
+                products = tool_result.get('products', [])
+                products_data = [
+                    ProductData(
+                        name=p['name'],
+                        price=p['price'],
+                        description=p['description'],
+                        rating=p.get('rating'),
+                        stock=p.get('stock'),
+                        product_id=p.get('sku', p.get('product_id'))
+                    )
+                    for p in products
+                ]
+                logger.info(f"✅ Extracted {len(products_data)} products")
+            
+            elif tool_name == 'view_cart' and tool_result.get('success'):
+                items = tool_result.get('cart_items', [])
+                if items:
+                    cart_items = [
+                        CartItemData(
+                            product_name=item['product_name'],
+                            quantity=item['quantity'],
+                            price=item['price']
+                        )
+                        for item in items
+                    ]
+                    cart_data = CartSummary(
+                        items=cart_items,
+                        total=tool_result.get('total_price', 0),
+                        total_items=len(items)
+                    )
+                    logger.info(f"✅ Cart has {len(cart_items)} items")
+            
+            elif tool_name == 'track_order' and tool_result.get('success'):
+                order_data = OrderData(
+                    order_id=tool_result.get('order_id', ''),
+                    status=tool_result.get('status', 'Pending'),
+                    estimated_delivery=tool_result.get('estimated_delivery', 'N/A'),
+                    tracking_id=tool_result.get('tracking_id'),
+                    order_date=tool_result.get('order_date')
+                )
+                logger.info(f"✅ Order tracking data extracted")
+        
         else:
             # RAG PIPELINE for general questions
             logger.info("🔍 Using RAG pipeline for general question")
@@ -277,11 +239,15 @@ async def chat_message(payload: ChatMessageInput):
         history.add_message(HumanMessage(content=user_message))
         history.add_message(AIMessage(content=reply_text))
         
-        # 4️⃣ RETURN RESPONSE
+        # 4️⃣ RETURN RESPONSE WITH STRUCTURED DATA
         return ChatMessageOutput(
-            user_id=user_id,
+            user_id=user_id_str,
             message=user_message,
             reply=reply_text,
+            tool_name=tool_name,
+            products=products_data,
+            cart=cart_data,
+            order=order_data,
             timestamp=datetime.now(),
             sources=sources
         )
@@ -289,7 +255,7 @@ async def chat_message(payload: ChatMessageInput):
     except Exception as e:
         logger.error(f"❌ Error in chat_message: {e}", exc_info=True)
         return ChatMessageOutput(
-            user_id=user_id,
+            user_id=user_id_str,
             message=user_message,
             reply="क्षमा करें, मुझे आपके सवाल का जवाब देने में समस्या हो रही है।",
             timestamp=datetime.now(),

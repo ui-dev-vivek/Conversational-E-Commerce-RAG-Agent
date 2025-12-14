@@ -1,11 +1,13 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-from .routes import auth, products, orders, chat
+from .routes import auth, products, orders, chat, cart
 
 def create_app() -> FastAPI:
     app = FastAPI(
@@ -28,9 +30,23 @@ def create_app() -> FastAPI:
 
     logger.info(f"✅ CORS enabled for: {allowed_origins}")
 
+    # Custom exception handler for validation errors
+    @app.exception_handler(RequestValidationError)
+    async def validation_exception_handler(request: Request, exc: RequestValidationError):
+        logger.error(f"❌ Validation Error: {exc.errors()}")
+        logger.error(f"   Request body: {await request.body()}")
+        return JSONResponse(
+            status_code=422,
+            content={
+                "detail": exc.errors(),
+                "body": str(await request.body())
+            }
+        )
+
     # Include routers
     app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
     app.include_router(products.router, prefix="/api/products", tags=["products"])
+    app.include_router(cart.router, prefix="/api/cart", tags=["cart"])
     app.include_router(orders.router, prefix="/api/orders", tags=["orders"])
     app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
     

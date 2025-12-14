@@ -181,20 +181,26 @@ server/
 
 **Chat Message**
 ```
-Frontend → routes/chat.py 
-         → agents/chains/routing_chain.py (intent routing)
-         → agents/chains/agent_executor.py (if tool needed)
-         → agents/tools/* (execute tool)
-         → services/llm (generate response)
-         → memory/chat_history (save conversation)
-         → Frontend
+
+Frontend → routes/chat.py
+→ agents/chains/routing_chain.py (intent routing)
+→ agents/chains/agent_executor.py (if tool needed)
+→ agents/tools/\* (execute tool)
+→ services/llm (generate response)
+→ memory/chat_history (save conversation)
+→ Frontend
+
 ```
 
 **RAG Query**
 ```
+
 Frontend → routes/chat.py
-         → services/rag/rag_pipeline.py
-         → rag/retrievers/* (semantic search)
-         → services/llm (answer with context)
-         → Frontend
+→ services/rag/rag_pipeline.py
+→ rag/retrievers/\* (semantic search)
+→ services/llm (answer with context)
+→ Frontend
+
+```
+
 ```
