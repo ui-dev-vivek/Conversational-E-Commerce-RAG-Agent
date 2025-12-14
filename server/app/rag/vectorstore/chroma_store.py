@@ -11,14 +11,14 @@ class ChromaStore:
             embedding_function=embadder.embeddings,
             persist_directory=settings.chroma_db_path,
         )
-    
+
     def add_documents(self,documents):
         self.vectorstore.add_documents(documents)
-    
+
     def update_documents(self,ids,documents):
         self.vectorstore.update_documents(ids,documents)
-        
+
     def delete_documents(self,ids):
         self.vectorstore.delete(ids)
-        
-        
+
+

@@ -10,9 +10,9 @@ class LocalEmbedder:
             model_kwargs={"device": "cpu"},
             encode_kwargs={"normalize_embeddings": True},
         )
-    # Not Used 
+    # Not Used
     def embed_documents(self,documents:List[str]):
-        return self.embeddings.embed_documents(documents)   
+        return self.embeddings.embed_documents(documents)
         # self.embeddings.embed_query(query) if text
     def embed_query(self,query:str):
         return self.embeddings.embed_query(query)

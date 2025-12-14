@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+"""RAG (Retrieval-Augmented Generation) package for LLM chat."""
+# Placeholder for RAG components
+=======
 """
 RAG (Retrieval-Augmented Generation) Module
 Handles embeddings, vector stores, and document processing
@@ -18,3 +22,4 @@ __all__ = [
 ]
 
 __version__ = "1.0.0"
+>>>>>>> 3111f70e589ab7b0a94810f7f151575630b441fd

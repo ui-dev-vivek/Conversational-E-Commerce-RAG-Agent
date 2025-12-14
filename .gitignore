@@ -1,8 +1,11 @@
 # Python / FastAPI
 __pycache__/
+__pycache__/*/
+/__pycache__
 *.py[cod]
 *$py.class
 *.so
+*.pyc
 .Python
 build/
 develop-eggs/
@@ -21,6 +24,7 @@ wheels/
 *.egg
 MANIFEST
 
+<<<<<<< HEAD
 # Virtual Environment
 .venv/
 venv/
@@ -288,3 +292,17 @@ storybook-static
 *.tsbuildinfo
 next-env.d.ts
 __pycache__/
+=======
+# VS Code Configuration
+**/.vscode/
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+.DS_Store
+.idea/
+**__pycache__/
+**/__pycache__/
+**__pycache__/*/
+*.iml
+>>>>>>> origin/master

@@ -66,11 +66,11 @@ def format_context(docs):
 def create_rag_chain():
     """
     Create RAG chain: Retrieve → Format → Prompt → LLM
-    
+
     Flow:
     Query → Semantic Search → Retrieved Docs → Context → LLM Prompt → Response
     """
-    
+
     # RAG Prompt Template
     rag_prompt = ChatPromptTemplate.from_template(
         """You are a helpful AJ Creations Shopping Assistant created by AiSyncBot.
@@ -87,7 +87,7 @@ def create_rag_chain():
         Answer:
         """
     )
-    
+
     # Chain: Retriever → Format → Prompt → LLM
     rag_chain = (
         {
@@ -99,7 +99,7 @@ def create_rag_chain():
         | rag_prompt
         | llm
     )
-    
+
     return rag_chain
 
 
@@ -110,8 +110,8 @@ rag_chain = create_rag_chain()
 @router.post("/message", response_model=ChatMessageOutput)
 async def chat_message(payload: ChatMessageInput):
     """
-    Enhanced chat endpoint with RAG and Agent Tools integration.
-    
+    Chat endpoint with Semantic Search RAG Chain
+
     Flow:
     1. Detect user intent (RAG vs Tool)
     2. Route to appropriate handler:
@@ -234,7 +234,7 @@ async def chat_message(payload: ChatMessageInput):
             reply_text = response.content.strip()
         
         logger.info(f"✅ Response generated: {reply_text[:100]}...")
-        
+
         # 3️⃣ STORE IN HISTORY
         history.add_message(HumanMessage(content=user_message))
         history.add_message(AIMessage(content=reply_text))
@@ -251,7 +251,7 @@ async def chat_message(payload: ChatMessageInput):
             timestamp=datetime.now(),
             sources=sources
         )
-    
+
     except Exception as e:
         logger.error(f"❌ Error in chat_message: {e}", exc_info=True)
         return ChatMessageOutput(
@@ -358,20 +358,20 @@ async def search_documents(
 ):
     """
     Direct semantic search endpoint
-    
+
     Args:
         query: User's search query
         k: Number of results to return
-    
+
     Returns:
         List of semantically relevant documents
     """
     try:
         logger.info(f"🔍 Search query: {query}")
-        
+
         retrieval_instance = Retrieval(k=k)
         results = retrieval_instance.semantic_search(query)
-        
+
         formatted_results = [
             {
                 "content": doc.page_content,
@@ -380,16 +380,16 @@ async def search_documents(
             }
             for doc in results
         ]
-        
+
         logger.info(f"✅ Found {len(formatted_results)} results")
-        
+
         return {
             "query": query,
             "results_count": len(formatted_results),
             "results": formatted_results,
             "status": "success"
         }
-    
+
     except Exception as e:
         logger.error(f"❌ Search error: {e}", exc_info=True)
         return {
@@ -407,9 +407,9 @@ async def get_chat_history(user_id: str):
     try:
         if user_id not in user_histories:
             return {"user_id": user_id, "history": [], "message": "No history found"}
-        
+
         history = user_histories[user_id]
-        
+
         formatted_history = [
             {
                 "type": msg.__class__.__name__,
@@ -417,13 +417,13 @@ async def get_chat_history(user_id: str):
             }
             for msg in history.messages
         ]
-        
+
         return {
             "user_id": user_id,
             "history": formatted_history,
             "message_count": len(formatted_history)
         }
-    
+
     except Exception as e:
         logger.error(f"❌ Error getting history: {e}")
         return {"error": str(e), "status": "failed"}
@@ -437,7 +437,7 @@ async def clear_chat_history(user_id: str):
             del user_histories[user_id]
             return {"status": "success", "message": f"History cleared for {user_id}"}
         return {"status": "not_found", "message": f"No history for {user_id}"}
-    
+
     except Exception as e:
         logger.error(f"❌ Error clearing history: {e}")
         return {"error": str(e), "status": "failed"}
