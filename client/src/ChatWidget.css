@@ -1,4 +1,32 @@
-/* Chat widget container */
+/* Chat Open Button - Fixed at bottom right */
+.chat-open-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 260px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2874f0 0%, #5a9cff 100%);
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(40, 116, 240, 0.4);
+  transition: all 0.3s ease;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-open-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(40, 116, 240, 0.6);
+}
+
+.chat-open-btn:active {
+  transform: scale(0.95);
+}
 .chat-widget-container {
   position: fixed;
   bottom: 20px;

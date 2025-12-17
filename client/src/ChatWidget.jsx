@@ -341,6 +341,22 @@ export default function ChatWidget({ autoOpen = false, initialMessage = '' }) {
     return newId
   })
 
+  // Extract current user_id from token if authenticated, otherwise use stored user_id
+  const getCurrentUserId = () => {
+    if (token) {
+      try {
+        const payload = token.split('.')[1]
+        const decoded = JSON.parse(atob(payload))
+        if (decoded.user_id) {
+          return decoded.user_id
+        }
+      } catch (e) {
+        console.warn('Could not decode token:', e)
+      }
+    }
+    return userId
+  }
+
   useEffect(() => {
     if (autoOpen) {
       setOpen(true)
@@ -398,6 +414,15 @@ export default function ChatWidget({ autoOpen = false, initialMessage = '' }) {
     setIsTyping(true)
 
     try {
+      const currentUserId = getCurrentUserId()
+      const userIdStr = String(currentUserId || userId).trim()
+      
+      if (!userIdStr) {
+        throw new Error('User ID is empty')
+      }
+      
+      console.log(`📝 Sending message with user_id: ${userIdStr}`)
+
       const response = await fetch(`${API_BASE}/api/chat/message`, {
         method: 'POST',
         headers: {
@@ -407,22 +432,27 @@ export default function ChatWidget({ autoOpen = false, initialMessage = '' }) {
         },
         body: JSON.stringify({
           message: messageText,
-          user_id: userId,
+          user_id: userIdStr,
         }),
       })
 
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
 
       const data = await response.json()
+      console.log("✅ Full response:", data)
 
+      // ✅ NEW: Use structured data directly from backend
       const aiMessage = {
         text: data.reply || 'No response from server',
         role: 'ai',
         time: Date.now(),
-        products: parseProductsFromResponse(data.reply),
-        actionCard: parseActionCard(data.reply, messageText),
-        cartData: parseCartData(data.reply),
-        orderData: parseOrderData(data.reply),
+
+        // ✅ Backend now sends structured data directly
+        products: data.products || null,
+        cartData: data.cart || null,
+        orderData: data.order || null,
+
+        toolName: data.tool_name,
         sources: data.sources,
         requiresAuth: data.reply.includes('login') || data.reply.includes('sign in')
       }
@@ -604,26 +634,27 @@ export default function ChatWidget({ autoOpen = false, initialMessage = '' }) {
                   <div key={pidx} className="product-card">
                     <div className="product-info">
                       <div className="product-name">{product.name}</div>
+                      <p className="product-description">{product.description}</p>
+                      {product.rating && (
+                        <div className="product-rating">⭐ {product.rating}/5</div>
+                      )}
                       <div className="product-price">₹{product.price}</div>
+                      {product.stock !== undefined && (
+                        <div className="product-stock">
+                          {product.stock > 0 ? `${product.stock} in stock` : 'Out of Stock'}
+                        </div>
+                      )}
                     </div>
                     <button
                       className="product-add-btn"
                       onClick={() => handleAddToCart(product.name)}
+                      disabled={product.stock === 0}
                     >
-                      Add to Cart
+                      {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
                     </button>
                   </div>
                 ))}
               </div>
-            )}
-
-            {/* Action Cards */}
-            {msg.actionCard && (
-              <ActionCard
-                type={msg.actionCard.type}
-                data={msg.actionCard.data}
-                onAction={handleAction}
-              />
             )}
 
             {/* Cart Summary */}
