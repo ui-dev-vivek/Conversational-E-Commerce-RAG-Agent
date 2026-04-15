@@ -43,6 +43,5 @@ class Settings(BaseSettings):
         case_sensitive = False
         extra = "allow" 
 
-
 # Create a singleton settings instance
 settings = Settings()
