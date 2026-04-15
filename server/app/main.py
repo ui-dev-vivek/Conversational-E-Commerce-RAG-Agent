@@ -7,7 +7,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-from .routes import auth, products, orders, chat, cart
+# from .routes import auth, products, orders, chat, cart
 
 def create_app() -> FastAPI:
     app = FastAPI(
@@ -44,11 +44,11 @@ def create_app() -> FastAPI:
         )
 
     # Include routers
-    app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
-    app.include_router(products.router, prefix="/api/products", tags=["products"])
-    app.include_router(cart.router, prefix="/api/cart", tags=["cart"])
-    app.include_router(orders.router, prefix="/api/orders", tags=["orders"])
-    app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
+    # app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
+    # app.include_router(products.router, prefix="/api/products", tags=["products"])
+    # app.include_router(cart.router, prefix="/api/cart", tags=["cart"])
+    # app.include_router(orders.router, prefix="/api/orders", tags=["orders"])
+    # app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
     
     # Health check
     @app.get("/health")
