@@ -1,5 +1,6 @@
 import logging
 
+from app.routers.routes import api_router
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -43,11 +44,7 @@ def create_app() -> FastAPI:
         )
 
     # Include routers
-    # app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
-    # app.include_router(products.router, prefix="/api/products", tags=["products"])
-    # app.include_router(cart.router, prefix="/api/cart", tags=["cart"])
-    # app.include_router(orders.router, prefix="/api/orders", tags=["orders"])
-    # app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
+    app.include_router(api_router)
 
     # Health check
     @app.get("/health")

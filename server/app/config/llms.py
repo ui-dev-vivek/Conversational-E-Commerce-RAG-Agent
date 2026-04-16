@@ -1,9 +1,8 @@
 import random
 
+from app.config.settings import settings
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
-
-from .settings import settings
 
 
 class LLMConfig:
