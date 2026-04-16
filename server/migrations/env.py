@@ -1,12 +1,9 @@
 from logging.config import fileConfig
-from app.config.database import DATABASE_URL
-from app.models.base import Base
-
-
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
 
 from alembic import context
+from app.config.database import DATABASE_URL
+from app.models.base import Base
+from sqlalchemy import engine_from_config, pool
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -21,12 +18,9 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-#vivek: add Base from db and set dynmic path of URL to use Alembic migrations 
+# vivek: add Base from db and set dynmic path of URL to use Alembic migrations
 target_metadata = Base.metadata
-config.set_main_option(
-    "sqlalchemy.url",
-    DATABASE_URL
-)
+config.set_main_option("sqlalchemy.url", DATABASE_URL)
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
@@ -71,9 +65,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

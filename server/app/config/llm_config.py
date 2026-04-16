@@ -1,23 +1,32 @@
-from langchain_openai import ChatOpenAI
-from langchain_groq import ChatGroq
-from .settings import settings
 import random
+
+from langchain_groq import ChatGroq
+from langchain_openai import ChatOpenAI
+
+from .settings import settings
+
 
 class LLMConfig:
     PROVIDER: str = settings.llm_provider
-    
+
     def __init__(self):
         switcher = {
-            'openrouter': self._configure_openrouter,
-            'openai': self._configure_openai,
-            'anthropic': self._configure_anthropic,
-            'groq': self._configure_groq,
+            "openrouter": self._configure_openrouter,
+            "openai": self._configure_openai,
+            "anthropic": self._configure_anthropic,
+            "groq": self._configure_groq,
         }
         switcher.get(self.PROVIDER, lambda: None)()
 
     def _configure_openrouter(self):
-        self.models = settings.openrouter_models.split('|') if settings.openrouter_models else []
-        self.api_keys = settings.openrouter_api_keys.split('|') if settings.openrouter_api_keys else []
+        self.models = (
+            settings.openrouter_models.split("|") if settings.openrouter_models else []
+        )
+        self.api_keys = (
+            settings.openrouter_api_keys.split("|")
+            if settings.openrouter_api_keys
+            else []
+        )
         self.API_BASE = settings.openrouter_api_base
         self.MODEL = random.choice(self.models) if self.models else None
         self.API_KEY = random.choice(self.api_keys) if self.api_keys else None
@@ -37,14 +46,17 @@ class LLMConfig:
         self.API_KEY = settings.groq_api_key
 
     def invoke(self):
-        if self.PROVIDER == 'groq':
-            return  ChatGroq(model_name=self.MODEL, api_key=self.API_KEY, temperature=0.7)
+        if self.PROVIDER == "groq":
+            return ChatGroq(
+                model_name=self.MODEL, api_key=self.API_KEY, temperature=0.7
+            )
 
         return ChatOpenAI(
             model=self.MODEL,
             openai_api_key=self.API_KEY,
             openai_api_base=self.API_BASE,
-            temperature=0.7
+            temperature=0.7,
         )
-        
+
+
 LLM = LLMConfig()
