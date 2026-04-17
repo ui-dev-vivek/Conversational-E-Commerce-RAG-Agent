@@ -16,6 +16,7 @@ class User(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     # Relations
     addresses = relationship("Address", back_populates="user")
+    refresh_tokens = relationship("RefreshToken", back_populates="user")
     # orders = relationship("Order", back_populates="user")
     # cart_items = relationship("CartItem", back_populates="user")
     
@@ -37,3 +38,18 @@ class Address(Base):
     
     # relationship
     user = relationship("User", back_populates="addresses")
+
+
+
+class RefreshToken(Base):
+     __tablename__ = 'refresh_tokens'
+     
+     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+     token: Mapped[str] = mapped_column(String(255), nullable=False)
+     refresh_token: Mapped[str] = mapped_column(String(255), nullable=False)
+     is_revoked: Mapped[bool] = mapped_column(Boolean, default=False)
+     expried_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+     
+     user = relationship("User", back_populates="refresh_tokens")
