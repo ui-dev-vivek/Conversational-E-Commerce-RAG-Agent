@@ -14,8 +14,8 @@ logger = logging.getLogger(__name__)
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="E-Commerce Chat Assistant API",
-        description="Backend API for the RAG-powered e-commerce chat assistant",
+        title="API Testing Tool",
+        description="-",
         version="0.2.0",
     )
 
