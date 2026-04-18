@@ -1,9 +1,12 @@
-from sqlalchemy import Column, Integer, String,Boolean, DateTime,ForeignKey
-from app.config.database import Base
-from sqlalchemy.orm import  Mapped, mapped_column, relationship
 from datetime import datetime
+
+from app.config.database import Base
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     username: Mapped[str] = mapped_column(String(150), unique=True, nullable=False)
@@ -17,11 +20,12 @@ class User(Base):
     # Relations
     addresses = relationship("Address", back_populates="user")
     refresh_tokens = relationship("RefreshToken", back_populates="user")
-    # orders = relationship("Order", back_populates="user")
-    # cart_items = relationship("CartItem", back_populates="user")
-    
+    orders = relationship("Order", back_populates="user")
+    cart_items = relationship("Cart", back_populates="user")
+
+
 class Address(Base):
-    __tablename__ = 'addresses'
+    __tablename__ = "addresses"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
@@ -31,25 +35,24 @@ class Address(Base):
     state: Mapped[str] = mapped_column(String(100))
     postal_code: Mapped[str] = mapped_column(String(20))
     country: Mapped[str] = mapped_column(String(100))
-    
+
     is_billing: Mapped[bool] = mapped_column(Boolean, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-    
+
     # relationship
     user = relationship("User", back_populates="addresses")
 
 
-
 class RefreshToken(Base):
-     __tablename__ = 'refresh_tokens'
-     
-     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-     token: Mapped[str] = mapped_column(String(255), nullable=False)
-     refresh_token: Mapped[str] = mapped_column(String(255), nullable=False)
-     is_revoked: Mapped[bool] = mapped_column(Boolean, default=False)
-     expried_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
-     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-     
-     user = relationship("User", back_populates="refresh_tokens")
+    __tablename__ = "refresh_tokens"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    token: Mapped[str] = mapped_column(String(255), nullable=False)
+    refresh_token: Mapped[str] = mapped_column(String(255), nullable=False)
+    is_revoked: Mapped[bool] = mapped_column(Boolean, default=False)
+    expried_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", back_populates="refresh_tokens")

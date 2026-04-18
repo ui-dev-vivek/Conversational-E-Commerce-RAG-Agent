@@ -1,3 +1,7 @@
+import datetime
+import logging
+from datetime import timedelta
+
 from app.config.authentication import (
     create_access_token,
     create_refresh_token,
@@ -5,12 +9,10 @@ from app.config.authentication import (
     verify_password,
     verify_token,
 )
-from app.models.users_model import User, RefreshToken
+from app.models.users_model import RefreshToken, User
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
-import logging
-from datetime import timedelta
-import datetime
+
 logger = logging.getLogger(__name__)
 
 
@@ -23,7 +25,9 @@ class AuthService:
 
     def user_with_token(self, user):
         access_token = create_access_token(data={"sub": user.email, "user_id": user.id})
-        refresh_token = create_refresh_token(data={"sub": user.email, "user_id": user.id})
+        refresh_token = create_refresh_token(
+            data={"sub": user.email, "user_id": user.id}
+        )
 
         # Store refresh token in DB
         try:
@@ -92,13 +96,15 @@ class AuthService:
     def logout(self, refresh_token: str):
         """Revoke refresh token on logout"""
         try:
-            token_obj = self.db.query(RefreshToken).filter(
-                RefreshToken.refresh_token == refresh_token
-            ).first()
-            
+            token_obj = (
+                self.db.query(RefreshToken)
+                .filter(RefreshToken.refresh_token == refresh_token)
+                .first()
+            )
+
             if not token_obj:
                 raise HTTPException(status_code=400, detail="Invalid token")
-            
+
             token_obj.is_revoked = True
             self.db.commit()
             logger.info(f"Token revoked for user_id: {token_obj.user_id}")
@@ -109,35 +115,35 @@ class AuthService:
             raise HTTPException(status_code=500, detail="Logout failed")
 
     def refresh_access_token(self, refresh_token: str):
-        """Generate new access token using refresh token"""
         payload = verify_token(refresh_token)
-        
+        return payload
         if not payload:
-            raise HTTPException(status_code=401, detail="Invalid or expired refresh token")
-        
+            raise HTTPException(
+                status_code=401, detail="Invalid or expired refresh token"
+            )
+
         if payload.get("type") != "refresh":
             raise HTTPException(status_code=401, detail="Not a refresh token")
-        
+
         # Check if token is revoked
-        token_obj = self.db.query(RefreshToken).filter(
-            RefreshToken.refresh_token == refresh_token
-        ).first()
-        
+        token_obj = (
+            self.db.query(RefreshToken)
+            .filter(RefreshToken.refresh_token == refresh_token)
+            .first()
+        )
+
         if not token_obj or token_obj.is_revoked:
             raise HTTPException(status_code=401, detail="Token has been revoked")
-        
+
         user = self.db.query(User).filter(User.id == token_obj.user_id).first()
         if not user:
             raise HTTPException(status_code=401, detail="User not found")
-        
+
         # Create new access token
         new_access_token = create_access_token(
             data={"sub": user.email, "user_id": user.id}
         )
-        
+
         logger.info(f"Access token refreshed for user_id: {user.id}")
-        
-        return {
-            "access_token": new_access_token,
-            "token_type": "bearer"
-        }
+
+        return {"access_token": new_access_token, "token_type": "bearer"}
